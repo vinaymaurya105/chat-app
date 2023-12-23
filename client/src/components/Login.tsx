@@ -1,6 +1,7 @@
 import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
+  Button,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -50,6 +51,13 @@ function Login() {
           }}
         />
       </Box>
+
+      <Button
+        variant="contained"
+        style={{ textTransform: "none", boxShadow: "none" }}
+      >
+        Login
+      </Button>
     </Box>
   );
 }

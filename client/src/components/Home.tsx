@@ -3,36 +3,39 @@ import React from "react";
 import Login from "./Login";
 import { url } from "inspector";
 
-const imgUrl =
-  "https://img.freepik.com/free-vector/emoji-framed-background_53876-89766.jpg?size=626&ext=jpg&ga=GA1.1.933889225.1703267740&semt=ais";
-
 function Home() {
   return (
     <Box
       display="flex"
-      // position="absolute"
+      justifyContent="center"
+      alignItems="center"
       flexDirection="column"
-      // left="50%"
-      // top="50px"
-      width="100%"
-      // height="100%"
-      flex={1}
-      style={{
-        backgroundImage: `url(${imgUrl})`,
-        backgroundRepeat: "no-repeat",
-      }}
+      gap={1.5}
+      p={2}
     >
       <Box
-        width="35%"
-        border="1px solid #B0A695"
-        height={40}
+        height={60}
         display="flex"
         justifyContent="center"
         alignItems="center"
+        bgcolor="#fff"
+        borderRadius={2}
+        p="0px 16px"
+        maxWidth={500}
+        width="100%"
       >
-        <Typography>Talk-A-Tive</Typography>
+        <Typography variant="h4" color="grey">
+          Talk-A-Tive
+        </Typography>
       </Box>
-      <Box width="35%" height="100%">
+      <Box
+        maxWidth={500}
+        width="100%"
+        height="100%"
+        bgcolor="#fff"
+        borderRadius={2}
+        p={2}
+      >
         <Login />
       </Box>
     </Box>
