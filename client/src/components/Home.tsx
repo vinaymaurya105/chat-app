@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import Login from "./Login";
 import { url } from "inspector";
+import Signup from "./Signup";
 
 function Home() {
   return (
@@ -36,7 +37,8 @@ function Home() {
         borderRadius={2}
         p={2}
       >
-        <Login />
+        {/* <Login /> */}
+        <Signup />
       </Box>
     </Box>
   );

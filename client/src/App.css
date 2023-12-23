@@ -11,3 +11,10 @@ body {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+}

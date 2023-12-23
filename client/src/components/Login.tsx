@@ -25,7 +25,7 @@ function Login() {
       gap={1.5}
       width="100%"
     >
-      <Box>
+      <Box className="wrapper">
         <InputLabel required>Email Address</InputLabel>
         <TextField
           placeholder="Please enter your email id"
@@ -33,7 +33,7 @@ function Login() {
           fullWidth
         />
       </Box>
-      <Box gap={1}>
+      <Box className="wrapper">
         <InputLabel required>Password</InputLabel>
         <TextField
           placeholder=" Please enter valid password"
