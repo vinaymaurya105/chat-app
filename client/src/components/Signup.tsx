@@ -1,13 +1,14 @@
 import { Password, Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
+  Button,
   IconButton,
   InputAdornment,
   InputLabel,
   TextField,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -49,13 +50,21 @@ function Signup() {
     setShow((prev) => ({ ...prev, [valType]: !prev[valType] }));
   };
 
-  console.log(values);
-  const handleField = (e: any, name: keyof typeof ValueType) => {
+  const handleField = (
+    e: ChangeEvent<HTMLInputElement>,
+    name: keyof typeof ValueType
+  ) => {
     const value = e.target.value;
     setValues((prev) => ({ ...prev, [name]: value }));
   };
 
-  console.log(show);
+  const handleSignup = () => {
+    if (values.password !== values.cnfPass) {
+      console.log("Please insert valid pass");
+    }
+    console.log(values);
+  };
+
   return (
     <Box display="flex" flexDirection="column" gap={1.5}>
       <Box className="wrapper">
@@ -67,7 +76,9 @@ function Signup() {
           required
           fullWidth
           value={values.firstName}
-          onChange={(e) => handleField(e, "firstName")}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            handleField(e, "firstName")
+          }
         />
       </Box>
       <Box className="wrapper">
@@ -79,7 +90,9 @@ function Signup() {
           required
           fullWidth
           value={values.lastName}
-          onChange={(e) => handleField(e, "lastName")}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            handleField(e, "lastName")
+          }
         />
       </Box>
       <Box className="wrapper">
@@ -91,7 +104,9 @@ function Signup() {
           required
           fullWidth
           value={values.email}
-          onChange={(e) => handleField(e, "email")}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            handleField(e, "email")
+          }
         />
       </Box>
       <Box className="wrapper">
@@ -101,7 +116,7 @@ function Signup() {
           sx={{ fieldset: { border: "none" } }}
           placeholder="Please enter your password"
           required
-          // value={value.password}
+          value={values.password}
           type={show.password ? "text" : "password"}
           InputProps={{
             endAdornment: (
@@ -116,7 +131,9 @@ function Signup() {
             ),
           }}
           fullWidth
-          onChange={(e) => handleField(e, "password")}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            handleField(e, "password")
+          }
         />
       </Box>
       <Box className="wrapper">
@@ -141,7 +158,9 @@ function Signup() {
               </InputAdornment>
             ),
           }}
-          onChange={(e) => handleField(e, "cnfPass")}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            handleField(e, "cnfPass")
+          }
         />
       </Box>
       {/* <Box className="wrapper">
@@ -154,6 +173,13 @@ function Signup() {
           value={values.img}
         />
       </Box> */}
+      <Button
+        variant="contained"
+        style={{ textTransform: "none", boxShadow: "none" }}
+        onClick={handleSignup}
+      >
+        Sign up
+      </Button>
     </Box>
   );
 }
