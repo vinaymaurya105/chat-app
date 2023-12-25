@@ -1,4 +1,4 @@
-import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -8,13 +8,37 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { makeStyles } from "@mui/styles";
+import { ChangeEvent, useEffect, useState } from "react";
+
+const useStyle: any = makeStyles(() => ({
+  input: {
+    "& .MuiOutlinedInput-root": {
+      border: "1px solid #0000003b",
+      padding: "6px 8px",
+    },
+    "& .MuiOutlinedInput-input": {
+      borderRadius: 3,
+      padding: 0,
+    },
+  },
+}));
 
 function Login() {
+  const classes = useStyle();
   const [show, setShow] = useState(false);
+  const [values, setValues] = useState({ email: "", password: "" });
 
   const handleIconClick = () => {
     setShow((prev) => !prev);
+  };
+
+  const handleField = (
+    e: ChangeEvent<HTMLInputElement>,
+    name: "email" | "password"
+  ) => {
+    const value = e.target.value;
+    setValues((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -28,14 +52,22 @@ function Login() {
       <Box className="wrapper">
         <InputLabel required>Email Address</InputLabel>
         <TextField
+          className={classes.input}
+          sx={{ fieldset: { border: "none" } }}
           placeholder="Please enter your email id"
           required
           fullWidth
+          value={values.email}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            handleField(e, "email")
+          }
         />
       </Box>
       <Box className="wrapper">
         <InputLabel required>Password</InputLabel>
         <TextField
+          className={classes.input}
+          sx={{ fieldset: { border: "none" } }}
           placeholder=" Please enter valid password"
           required
           fullWidth
@@ -49,6 +81,10 @@ function Login() {
               </InputAdornment>
             ),
           }}
+          value={values.password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            handleField(e, "password")
+          }
         />
       </Box>
 
