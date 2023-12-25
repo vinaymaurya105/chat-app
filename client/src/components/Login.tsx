@@ -41,6 +41,10 @@ function Login() {
     setValues((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleLogin = () => {
+    console.log("login Successful");
+  };
+
   return (
     <Box
       display="flex"
@@ -48,6 +52,7 @@ function Login() {
       justifyContent="center"
       gap={1.5}
       width="100%"
+      boxSizing="border-box"
     >
       <Box className="wrapper">
         <InputLabel required>Email Address</InputLabel>
@@ -91,6 +96,7 @@ function Login() {
       <Button
         variant="contained"
         style={{ textTransform: "none", boxShadow: "none" }}
+        onClick={handleLogin}
       >
         Login
       </Button>

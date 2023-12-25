@@ -37,8 +37,8 @@ function Home() {
         borderRadius={2}
         p={2}
       >
-        {/* <Login /> */}
-        <Signup />
+        <Login />
+        {/* <Signup /> */}
       </Box>
     </Box>
   );
