@@ -1,6 +1,7 @@
-import mongoose, { model, Schema } from "mongoose";
+import mongoose, { InferSchemaType, model, Schema } from "mongoose";
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
+type ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ChatSchema = new Schema(
   {
@@ -13,6 +14,8 @@ const ChatSchema = new Schema(
   { timestamps: true }
 );
 
-const chatModel = model("chat", ChatSchema);
+export const chatModel = model("chat", ChatSchema);
 
-export default chatModel;
+export type Chat = InferSchemaType<typeof ChatSchema> & {
+  _id: ObjectId;
+};

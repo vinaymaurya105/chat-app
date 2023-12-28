@@ -1,6 +1,7 @@
-import mongoose, { Schema, model } from "mongoose";
+import mongoose, { InferSchemaType, Schema, model } from "mongoose";
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
+type ObjectId = mongoose.Schema.Types.ObjectId;
 const MessageSchema = new Schema(
   {
     sender: { type: ObjectId, required: true },
@@ -10,6 +11,8 @@ const MessageSchema = new Schema(
   { timestamps: true }
 );
 
-const messageModel = model("message", MessageSchema);
+export const messageModel = model("message", MessageSchema);
 
-export default messageModel;
+export type Message = InferSchemaType<typeof MessageSchema> & {
+  _id: ObjectId;
+};

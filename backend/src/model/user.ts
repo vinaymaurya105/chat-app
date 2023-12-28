@@ -1,4 +1,6 @@
-import { Schema, model } from "mongoose";
+import mongoose, { InferSchemaType, Schema, model } from "mongoose";
+
+type ObjectId = mongoose.Schema.Types.ObjectId;
 
 const UserSchema = new Schema({
   firstName: { type: String, required: true },
@@ -8,6 +10,8 @@ const UserSchema = new Schema({
   icon: { type: String },
 });
 
-const UserModel = model("users", UserSchema);
+export const userModel = model("users", UserSchema);
 
-export default UserModel;
+export type User = InferSchemaType<typeof UserSchema> & {
+  _id: ObjectId;
+};
