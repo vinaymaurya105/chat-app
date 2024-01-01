@@ -5,7 +5,7 @@ type ObjectId = mongoose.Schema.Types.ObjectId;
 const UserSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   pasword: { type: String, required: true },
   icon: { type: String },
 });

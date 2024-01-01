@@ -1,17 +1,22 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDb from "./config/db";
-import mongoose from "mongoose";
+import router from "./src/routes";
 
 const app = express();
 
 dotenv.config();
 
 async function main() {
-  // connect db
+  // connect database
   await connectDb();
 
-  app.get("/", (req: any, res: any) => {
+  app.use(express.json());
+
+  // routes
+  app.use("/", router);
+
+  app.get("/health", (req: any, res: any) => {
     res.send("Server is running");
   });
 
