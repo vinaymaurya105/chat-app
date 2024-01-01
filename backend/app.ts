@@ -1,18 +1,23 @@
 import express from "express";
+import dotenv from "dotenv";
+import connectDb from "./config/db";
 import mongoose from "mongoose";
 
 const app = express();
 
-const PORT = 4002;
+dotenv.config();
 
 async function main() {
-  await mongoose.connect("mongodb://localhost:27017", { dbName: "chatapp" });
+  // connect db
+  await connectDb();
 
   app.get("/", (req: any, res: any) => {
     res.send("Server is running");
   });
 
-  app.listen(PORT, () => console.log(`app was listening on  ${PORT}`));
+  app.listen(process.env.PORT, () =>
+    console.log(`app was listening on  ${process.env.PORT}`)
+  );
 }
 
-main();
+main().catch((err) => console.error(err.message));
