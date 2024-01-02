@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { userModel } from "../model/user";
 import bcrypt from "bcrypt";
 
-async function registerUser(req: Request, res: Response) {
+export async function registerUser(req: Request, res: Response) {
   const { firstName, lastName, email, password, icon } = req.body;
 
   if (!firstName || !lastName || !email || !password) {
@@ -31,4 +31,6 @@ async function registerUser(req: Request, res: Response) {
   });
 }
 
-export default registerUser;
+export async function login(req: Request, res: Response) {
+  return res.json({ success: true });
+}
