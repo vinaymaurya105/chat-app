@@ -32,5 +32,25 @@ export async function registerUser(req: Request, res: Response) {
 }
 
 export async function login(req: Request, res: Response) {
-  return res.json({ success: true });
+  const { userName, password } = req.body;
+
+  if (!userName || !password)
+    return res.json({
+      success: false,
+      message: "userName and password is required",
+    });
+
+  const user = await userModel.findOne(
+    { email: userName },
+    { password: true, email: true }
+  );
+
+  if (!user)
+    return res.json({ success: false, message: "user does not exist" });
+
+  const isSame = await bcrypt.compare(password, user.password);
+
+  if (!isSame) throw Error("Invalid userName or password");
+
+  return res.json({ success: true, message: "Login successful" });
 }
