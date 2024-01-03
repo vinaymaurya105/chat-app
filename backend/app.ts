@@ -2,16 +2,18 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDb from "./config/db";
 import router from "./src/routes";
+import cors from "cors";
 
 const app = express();
 
 dotenv.config();
 
-async function main() {
-  // connect database
-  await connectDb();
+app.use(express.json());
+app.use(cors({ origin: "*" }));
 
-  app.use(express.json());
+async function main() {
+  // connect to database
+  await connectDb();
 
   // routes
   app.use("/", router);
