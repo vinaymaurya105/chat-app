@@ -1,31 +1,39 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
-import Login from "./Login";
-import { url } from "inspector";
-import Signup from "./Signup";
+import { makeStyles } from "@mui/styles";
 
-function Home() {
+const useStyle = makeStyles({
+  container: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 2,
+    maxWidth: 500,
+  },
+});
+
+function Home(props: any) {
+  const { label = "Login", subLabel, children } = props;
   return (
     <Box
       display="flex"
       justifyContent="center"
       alignItems="center"
       flexDirection="column"
-      gap={1.5}
+      gap={2}
       p={2}
     >
       <Box
-        height={60}
+        height={40}
         display="flex"
         justifyContent="center"
         alignItems="center"
         bgcolor="#fff"
         borderRadius={2}
-        p="0px 16px"
+        p="2px 16px"
         maxWidth={500}
         width="100%"
       >
-        <Typography variant="h4" color="grey">
+        <Typography variant="h5" color="grey">
           Talk-A-Tive
         </Typography>
       </Box>
@@ -36,9 +44,14 @@ function Home() {
         bgcolor="#fff"
         borderRadius={2}
         p={2}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        gap={1.5}
       >
-        <Login />
-        {/* <Signup /> */}
+        <Typography variant="h6">{label}</Typography>
+        {subLabel}
+        {children}
       </Box>
     </Box>
   );
