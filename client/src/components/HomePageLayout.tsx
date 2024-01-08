@@ -11,7 +11,7 @@ const useStyle = makeStyles({
   },
 });
 
-function Home(props: any) {
+function HomePageLayout(props: any) {
   const { label = "Login", subLabel, children } = props;
   return (
     <Box
@@ -57,4 +57,4 @@ function Home(props: any) {
   );
 }
 
-export default Home;
+export default HomePageLayout;

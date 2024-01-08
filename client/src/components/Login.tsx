@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useEffect, useState } from "react";
-import Home from "./HomePageLayout";
+import HomePageLayout from "./HomePageLayout";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -47,7 +47,7 @@ function Login() {
   };
 
   return (
-    <Home>
+    <HomePageLayout>
       <Box className="wrapper">
         <InputLabel required>Email Address</InputLabel>
         <TextField
@@ -94,7 +94,7 @@ function Login() {
       >
         Login
       </Button>
-    </Home>
+    </HomePageLayout>
   );
 }
 

@@ -1,6 +1,4 @@
 import { Box } from "@mui/material";
-import React from "react";
-import Home from "./components/HomePageLayout";
 import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./components/Login";
