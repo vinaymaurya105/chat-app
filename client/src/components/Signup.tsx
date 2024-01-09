@@ -9,16 +9,19 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useState } from "react";
+import HomePageLayout from "./HomePageLayout";
 
 const useStyle: any = makeStyles(() => ({
   input: {
     "& .MuiOutlinedInput-root": {
       border: "1px solid #0000003b",
-      padding: "6px 8px",
+      padding: "5px 8px",
+      height: "30px",
     },
     "& .MuiOutlinedInput-input": {
       borderRadius: 3,
       padding: 0,
+      fontSize: 15,
     },
   },
 }));
@@ -66,9 +69,12 @@ function Signup() {
   };
 
   return (
-    <Box display="flex" flexDirection="column" gap={1.5}>
+    // <Box display="flex" flexDirection="column" gap={1.5}>
+    <HomePageLayout>
       <Box className="wrapper">
-        <InputLabel required>First Name</InputLabel>
+        <InputLabel required style={{ fontSize: 13 }}>
+          First Name
+        </InputLabel>
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -82,7 +88,9 @@ function Signup() {
         />
       </Box>
       <Box className="wrapper">
-        <InputLabel required>Last Name</InputLabel>
+        <InputLabel required style={{ fontSize: 13 }}>
+          Last Name
+        </InputLabel>
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -96,7 +104,9 @@ function Signup() {
         />
       </Box>
       <Box className="wrapper">
-        <InputLabel required>Email</InputLabel>
+        <InputLabel required style={{ fontSize: 13 }}>
+          Email
+        </InputLabel>
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -110,7 +120,9 @@ function Signup() {
         />
       </Box>
       <Box className="wrapper">
-        <InputLabel required>Password</InputLabel>
+        <InputLabel required style={{ fontSize: 13 }}>
+          Password
+        </InputLabel>
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -137,7 +149,9 @@ function Signup() {
         />
       </Box>
       <Box className="wrapper">
-        <InputLabel required>Confirm Password</InputLabel>
+        <InputLabel required style={{ fontSize: 13 }}>
+          Confirm Password
+        </InputLabel>
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -163,16 +177,17 @@ function Signup() {
           }
         />
       </Box>
-      {/* <Box className="wrapper">
-        <InputLabel>Profile Picture</InputLabel>
+      <Box className="wrapper">
+        <InputLabel style={{ fontSize: 13 }}>Profile Picture</InputLabel>
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
           type="file"
           fullWidth
           value={values.img}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => handleField(e, "img")}
         />
-      </Box> */}
+      </Box>
       <Button
         variant="contained"
         style={{ textTransform: "none", boxShadow: "none" }}
@@ -180,7 +195,7 @@ function Signup() {
       >
         Sign up
       </Button>
-    </Box>
+    </HomePageLayout>
   );
 }
 
