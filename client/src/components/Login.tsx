@@ -11,6 +11,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useEffect, useState } from "react";
 import HomePageLayout from "./HomePageLayout";
+import { Link } from "react-router-dom";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -47,7 +48,10 @@ function Login() {
   };
 
   return (
-    <HomePageLayout>
+    <HomePageLayout label="Login">
+      <Typography variant="body2">
+        Don't have an account? <Link to="/signup">Create an account</Link>
+      </Typography>
       <Box className="wrapper">
         <InputLabel required>Email Address</InputLabel>
         <TextField

@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { Link } from "react-router-dom";
 
 const useStyle = makeStyles({
   container: {
@@ -12,7 +13,7 @@ const useStyle = makeStyles({
 });
 
 function HomePageLayout(props: any) {
-  const { label = "Login", subLabel, children } = props;
+  const { label, children } = props;
   return (
     <Box
       display="flex"
@@ -50,7 +51,6 @@ function HomePageLayout(props: any) {
         gap={1.5}
       >
         <Typography variant="h6">{label}</Typography>
-        {subLabel}
         {children}
       </Box>
     </Box>
