@@ -6,10 +6,12 @@ import {
   InputAdornment,
   InputLabel,
   TextField,
+  Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useState } from "react";
 import HomePageLayout from "./HomePageLayout";
+import { Link } from "react-router-dom";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -69,8 +71,10 @@ function Signup() {
   };
 
   return (
-    // <Box display="flex" flexDirection="column" gap={1.5}>
-    <HomePageLayout>
+    <HomePageLayout label="Signup">
+      <Typography variant="body2">
+        Already have an account? <Link to="/login">Log In</Link>
+      </Typography>
       <Box className="wrapper">
         <InputLabel required style={{ fontSize: 13 }}>
           First Name
