@@ -18,10 +18,12 @@ const useStyle: any = makeStyles(() => ({
     "& .MuiOutlinedInput-root": {
       border: "1px solid #0000003b",
       padding: "6px 8px",
+      height: 30,
     },
     "& .MuiOutlinedInput-input": {
       borderRadius: 3,
       padding: 0,
+      fontSize: 15,
     },
   },
 }));
@@ -52,8 +54,12 @@ function Login() {
       <Typography variant="body2">
         Don't have an account? <Link to="/signup">Create an account</Link>
       </Typography>
+
       <Box className="wrapper">
-        <InputLabel required>Email Address</InputLabel>
+        <InputLabel required style={{ fontSize: 13 }}>
+          Email Address
+        </InputLabel>
+
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -66,8 +72,12 @@ function Login() {
           }
         />
       </Box>
+
       <Box className="wrapper">
-        <InputLabel required>Password</InputLabel>
+        <InputLabel required style={{ fontSize: 13 }}>
+          Password
+        </InputLabel>
+
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}

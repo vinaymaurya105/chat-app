@@ -23,7 +23,7 @@ const useStyle: any = makeStyles(() => ({
     "& .MuiOutlinedInput-input": {
       borderRadius: 3,
       padding: 0,
-      fontSize: 15,
+      fontSize: 14,
     },
   },
 }));
@@ -75,10 +75,12 @@ function Signup() {
       <Typography variant="body2">
         Already have an account? <Link to="/login">Log In</Link>
       </Typography>
+
       <Box className="wrapper">
         <InputLabel required style={{ fontSize: 13 }}>
           First Name
         </InputLabel>
+
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -91,10 +93,12 @@ function Signup() {
           }
         />
       </Box>
+
       <Box className="wrapper">
         <InputLabel required style={{ fontSize: 13 }}>
           Last Name
         </InputLabel>
+
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -107,10 +111,12 @@ function Signup() {
           }
         />
       </Box>
+
       <Box className="wrapper">
         <InputLabel required style={{ fontSize: 13 }}>
           Email
         </InputLabel>
+
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -123,10 +129,12 @@ function Signup() {
           }
         />
       </Box>
+
       <Box className="wrapper">
         <InputLabel required style={{ fontSize: 13 }}>
           Password
         </InputLabel>
+
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -152,10 +160,12 @@ function Signup() {
           }
         />
       </Box>
+
       <Box className="wrapper">
         <InputLabel required style={{ fontSize: 13 }}>
           Confirm Password
         </InputLabel>
+
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -181,8 +191,10 @@ function Signup() {
           }
         />
       </Box>
+
       <Box className="wrapper">
         <InputLabel style={{ fontSize: 13 }}>Profile Picture</InputLabel>
+
         <TextField
           className={classes.input}
           sx={{ fieldset: { border: "none" } }}
@@ -192,6 +204,7 @@ function Signup() {
           onChange={(e: ChangeEvent<HTMLInputElement>) => handleField(e, "img")}
         />
       </Box>
+
       <Button
         variant="contained"
         style={{ textTransform: "none", boxShadow: "none" }}
