@@ -17,7 +17,7 @@ const useStyle: any = makeStyles(() => ({
   input: {
     "& .MuiOutlinedInput-root": {
       border: "1px solid #0000003b",
-      padding: "6px 8px",
+      padding: "5px 8px",
       height: 30,
     },
     "& .MuiOutlinedInput-input": {
