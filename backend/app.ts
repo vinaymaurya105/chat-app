@@ -8,19 +8,22 @@ const app = express();
 
 dotenv.config();
 
-app.use(express.json());
-app.use(cors({ origin: "*" }));
+// app.use(express.json());
+// app.use(cors({ origin: "*" }));
 
 async function main() {
   // connect to database
   await connectDb();
 
-  // routes
-  app.use("/", router);
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   app.get("/health", (req: any, res: any) => {
     res.send("Server is running");
   });
+
+  // routes
+  app.use("/", router);
 
   app.listen(process.env.PORT, () =>
     console.log(`app was listening on  ${process.env.PORT}`)
