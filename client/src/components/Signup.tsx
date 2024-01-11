@@ -34,7 +34,6 @@ enum ValueType {
   "email",
   "password",
   "cnfPass",
-  "img",
 }
 
 function Signup() {
@@ -192,7 +191,7 @@ function Signup() {
         />
       </Box>
 
-      <Box className="wrapper">
+      {/* <Box className="wrapper">
         <InputLabel style={{ fontSize: 13 }}>Profile Picture</InputLabel>
 
         <TextField
@@ -203,7 +202,7 @@ function Signup() {
           value={values.img}
           onChange={(e: ChangeEvent<HTMLInputElement>) => handleField(e, "img")}
         />
-      </Box>
+      </Box> */}
 
       <Button
         variant="contained"
