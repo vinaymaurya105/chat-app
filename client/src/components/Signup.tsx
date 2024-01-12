@@ -12,6 +12,7 @@ import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useState } from "react";
 import HomePageLayout from "./HomePageLayout";
 import { Link } from "react-router-dom";
+import Snackebar from "./Snackebar";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -49,6 +50,7 @@ function Signup() {
   });
 
   const [show, setShow] = useState({ password: false, cnfPasswd: false });
+  const [alert, setAlert] = useState({ open: false, variant: "error" });
 
   const handleIconClick = (valType: "password" | "cnfPasswd") => {
     setShow((prev) => ({ ...prev, [valType]: !prev[valType] }));
@@ -65,9 +67,13 @@ function Signup() {
   const handleSignup = () => {
     if (values.password !== values.cnfPass) {
       console.log("Please insert valid pass");
+      setAlert(() => ({ open: true, variant: "error" }));
+      return;
     }
     console.log(values);
   };
+
+  console.log(alert);
 
   return (
     <HomePageLayout label="Signup">
@@ -211,6 +217,14 @@ function Signup() {
       >
         Sign up
       </Button>
+
+      {alert.open && (
+        <Snackebar
+          isShow={alert.open}
+          variant={alert.variant}
+          setAlert={setAlert}
+        />
+      )}
     </HomePageLayout>
   );
 }

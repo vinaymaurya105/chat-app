@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Snackebar from "./components/Snackebar";
+// import Snackebar from "./components/Snackebar";
 
 function App() {
   return (

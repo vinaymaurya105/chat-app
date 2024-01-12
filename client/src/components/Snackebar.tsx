@@ -6,7 +6,7 @@ import {
   Snackbar,
   SnackbarContent,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@mui/styles";
 
@@ -21,37 +21,47 @@ const useStyle = makeStyles({
   },
 });
 
-function Snackebar(props: { isShow?: boolean; variant?: string }) {
-  const { isShow = false, variant } = props;
+function Snackebar(props: {
+  isShow?: boolean;
+  variant?: string;
+  setAlert: any;
+}) {
+  const { isShow = false, variant, setAlert } = props;
 
   const classes = useStyle();
 
-  const [open, setOpen] = useState(isShow);
+  // const [open, setOpen] = useState(isShow);
+
+  // useEffect(() => {
+  //   setOpen(isShow);
+  //   console.log(open);
+  // }, [isShow]);
+
+  console.log(open);
 
   return (
-    <Box>
-      <Button onClick={() => setOpen((prev) => !prev)}>Open snack</Button>
-
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={open}
-        autoHideDuration={1000}
-        onClose={() => setOpen((prev) => !prev)}
-        TransitionComponent={Slide}
-      >
-        <SnackbarContent
-          elevation={0}
-          aria-describedby="message-id2"
-          className={classes.root}
-          message="Hello this is one"
-          action={
-            <IconButton onClick={() => setOpen(false)} size="small">
-              <CloseIcon style={{ color: "#fff" }} />
-            </IconButton>
-          }
-        />
-      </Snackbar>
-    </Box>
+    <Snackbar
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      open={isShow}
+      autoHideDuration={1000}
+      onClose={() => setAlert((prev: any) => ({ ...prev, open: false }))}
+      TransitionComponent={Slide}
+    >
+      <SnackbarContent
+        elevation={0}
+        aria-describedby="message-id2"
+        className={classes.root}
+        message="Hello this is one"
+        action={
+          <IconButton
+            onClick={() => setAlert((prev: any) => ({ ...prev, open: false }))}
+            size="small"
+          >
+            <CloseIcon style={{ color: "#fff" }} />
+          </IconButton>
+        }
+      />
+    </Snackbar>
   );
 }
 
