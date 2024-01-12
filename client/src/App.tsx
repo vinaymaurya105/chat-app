@@ -12,9 +12,7 @@ function App() {
         <Routes>
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={Signup} />
-          <Route path="/signup" Component={Signup} />
-          <Route path="/test" Component={Snackebar} />
-          <Route path="*" element={<Navigate to="/login" replace={true} />} />
+          {/* <Route path="/test" Component={Snackebar} /> */}
           <Route path="*" element={<Navigate to="/login" replace={true} />} />
         </Routes>
       </BrowserRouter>

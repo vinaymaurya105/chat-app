@@ -6,11 +6,28 @@ import {
   Snackbar,
   SnackbarContent,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { makeStyles } from "@mui/styles";
 
-function Snackebar() {
-  const [open, setOpen] = useState(false);
+const useStyle = makeStyles({
+  root: {
+    "&.MuiSnackbarContent-root": {
+      boxShadow: "none",
+      color: "#fff",
+      background: "#2196f3",
+      borderRadius: 6,
+    },
+  },
+});
+
+function Snackebar(props: { isShow?: boolean; variant?: string }) {
+  const { isShow = false, variant } = props;
+
+  const classes = useStyle();
+
+  const [open, setOpen] = useState(isShow);
+
   return (
     <Box>
       <Button onClick={() => setOpen((prev) => !prev)}>Open snack</Button>
@@ -25,9 +42,10 @@ function Snackebar() {
         <SnackbarContent
           elevation={0}
           aria-describedby="message-id2"
+          className={classes.root}
           message="Hello this is one"
           action={
-            <IconButton>
+            <IconButton onClick={() => setOpen(false)} size="small">
               <CloseIcon style={{ color: "#fff" }} />
             </IconButton>
           }
