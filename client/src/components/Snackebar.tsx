@@ -30,15 +30,6 @@ function Snackebar(props: {
 
   const classes = useStyle();
 
-  // const [open, setOpen] = useState(isShow);
-
-  // useEffect(() => {
-  //   setOpen(isShow);
-  //   console.log(open);
-  // }, [isShow]);
-
-  console.log(open);
-
   return (
     <Snackbar
       anchorOrigin={{ vertical: "top", horizontal: "center" }}

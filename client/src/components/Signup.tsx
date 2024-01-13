@@ -70,10 +70,7 @@ function Signup() {
       setAlert(() => ({ open: true, variant: "error" }));
       return;
     }
-    console.log(values);
   };
-
-  console.log(alert);
 
   return (
     <HomePageLayout label="Signup">
