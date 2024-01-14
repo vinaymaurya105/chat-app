@@ -1,4 +1,4 @@
-import { Password, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
