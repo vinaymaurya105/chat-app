@@ -219,7 +219,7 @@ function Signup() {
         <Snackebar
           isShow={alert.open}
           variant={alert.variant}
-          setAlert={setAlert}
+          setOpen={setAlert}
         />
       )}
     </HomePageLayout>

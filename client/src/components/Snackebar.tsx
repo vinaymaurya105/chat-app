@@ -21,12 +21,8 @@ const useStyle = makeStyles({
   },
 });
 
-function Snackebar(props: {
-  isShow?: boolean;
-  variant?: string;
-  setAlert: any;
-}) {
-  const { isShow = false, variant, setAlert } = props;
+function Snackebar(props: { isShow: boolean; variant: string; setOpen: any }) {
+  const { isShow = false, variant, setOpen } = props;
 
   const classes = useStyle();
 
@@ -35,7 +31,7 @@ function Snackebar(props: {
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       open={isShow}
       autoHideDuration={1000}
-      onClose={() => setAlert((prev: any) => ({ ...prev, open: false }))}
+      onClose={() => setOpen((prev: any) => ({ ...prev, open: false }))}
       TransitionComponent={Slide}
     >
       <SnackbarContent
@@ -45,7 +41,7 @@ function Snackebar(props: {
         message="Hello this is one"
         action={
           <IconButton
-            onClick={() => setAlert((prev: any) => ({ ...prev, open: false }))}
+            onClick={() => setOpen((prev: any) => ({ ...prev, open: false }))}
             size="small"
           >
             <CloseIcon style={{ color: "#fff" }} />
