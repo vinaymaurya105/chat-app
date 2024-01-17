@@ -15,30 +15,39 @@ const useStyle = makeStyles({
     "&.MuiSnackbarContent-root": {
       boxShadow: "none",
       color: "#fff",
-      background: "#2196f3",
       borderRadius: 6,
     },
   },
 });
 
-function Snackebar(props: { isShow: boolean; variant: string; setOpen: any }) {
-  const { isShow = false, variant, setOpen } = props;
+type SnackBarType = {
+  isShow: boolean;
+  variant: string;
+  setOpen: any;
+  message?: string;
+};
 
-  const classes = useStyle();
+function Snackebar(props: SnackBarType) {
+  const { isShow = false, variant, setOpen, message } = props;
+  console.log(props);
 
-  return (
+  const classes = useStyle(variant);
+
+  return message ? (
     <Snackbar
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       open={isShow}
-      autoHideDuration={1000}
+      autoHideDuration={1500}
       onClose={() => setOpen((prev: any) => ({ ...prev, open: false }))}
       TransitionComponent={Slide}
+      color={variant === "error" ? "erro" : "success"}
     >
       <SnackbarContent
         elevation={0}
         aria-describedby="message-id2"
         className={classes.root}
-        message="Hello this is one"
+        style={{ background: variant === "success" ? "#2e7d32" : "#ef5350" }}
+        message={message}
         action={
           <IconButton
             onClick={() => setOpen((prev: any) => ({ ...prev, open: false }))}
@@ -49,6 +58,8 @@ function Snackebar(props: { isShow: boolean; variant: string; setOpen: any }) {
         }
       />
     </Snackbar>
+  ) : (
+    <></>
   );
 }
 

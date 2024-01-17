@@ -8,8 +8,8 @@ const app = express();
 
 dotenv.config();
 
-// app.use(express.json());
-// app.use(cors({ origin: "*" }));
+app.use(express.json());
+app.use(cors({ origin: "*" }));
 
 async function main() {
   // connect to database

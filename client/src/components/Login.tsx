@@ -13,6 +13,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import HomePageLayout from "./HomePageLayout";
 import { Link } from "react-router-dom";
 import Snackebar from "./Snackebar";
+import axios from "axios";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -31,9 +32,14 @@ const useStyle: any = makeStyles(() => ({
 
 function Login() {
   const classes = useStyle();
+
   const [show, setShow] = useState(false);
   const [values, setValues] = useState({ email: "", password: "" });
-  const [snack, setSnack] = useState({ open: false, variant: "error" });
+  const [snack, setSnack] = useState({
+    open: false,
+    variant: "error",
+    message: "",
+  });
 
   const handleIconClick = () => {
     setShow((prev) => !prev);
@@ -48,9 +54,23 @@ function Login() {
   };
 
   const handleLogin = () => {
-    const config = { method: "GET" };
+    const config = {
+      method: "POST",
+      url: "http://localhost:4000/login",
+      data: { userName: values.email, password: values.password },
+    };
 
-    setSnack((prev) => ({ ...snack, open: true }));
+    axios(config)
+      .then((res: any) => {
+        const { success, message } = res.data;
+
+        if (!success) throw Error(message);
+
+        setSnack({ open: true, variant: "success", message });
+      })
+      .catch((err) => {
+        setSnack({ open: true, variant: "error", message: err.message });
+      });
   };
 
   return (
@@ -69,7 +89,7 @@ function Login() {
             className={classes.input}
             sx={{ fieldset: { border: "none" } }}
             placeholder="Please enter your email id"
-            required
+            required={true}
             fullWidth
             value={values.email}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -119,6 +139,7 @@ function Login() {
           isShow={snack.open}
           variant={snack.variant}
           setOpen={setSnack}
+          message={snack.message}
         />
       )}
     </>
