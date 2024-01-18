@@ -14,6 +14,7 @@ import HomePageLayout from "./HomePageLayout";
 import { Link } from "react-router-dom";
 import Snackebar from "./Snackebar";
 import axios from "axios";
+import { LOGIN } from "../constants/api";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -56,7 +57,7 @@ function Login() {
   const handleLogin = () => {
     const config = {
       method: "POST",
-      url: "http://localhost:4000/login",
+      url: LOGIN,
       data: { userName: values.email, password: values.password },
     };
 
