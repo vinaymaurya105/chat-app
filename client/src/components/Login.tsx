@@ -2,6 +2,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
+  CircularProgress,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -15,6 +16,7 @@ import { Link } from "react-router-dom";
 import Snackebar from "./Snackebar";
 import axios from "axios";
 import { LOGIN } from "../constants/api";
+import Loader from "./Loader";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -42,6 +44,8 @@ function Login() {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleIconClick = () => {
     setShow((prev) => !prev);
   };
@@ -61,6 +65,7 @@ function Login() {
       data: { userName: values.email, password: values.password },
     };
 
+    setLoading(true);
     axios(config)
       .then((res: any) => {
         const { success, message } = res.data;
@@ -68,14 +73,16 @@ function Login() {
         if (!success) throw Error(message);
 
         setSnack({ open: true, variant: "success", message });
+        setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         setSnack({ open: true, variant: "error", message: err.message });
       });
   };
 
   return (
-    <>
+    <Loader active={loading}>
       <HomePageLayout label="Login">
         <Typography variant="body2">
           Don't have an account? <Link to="/signup">Create an account</Link>
@@ -87,7 +94,9 @@ function Login() {
           </InputLabel>
 
           <TextField
+            autoFocus
             className={classes.input}
+            autoComplete="email"
             sx={{ fieldset: { border: "none" } }}
             placeholder="Please enter your email id"
             required={true}
@@ -143,7 +152,9 @@ function Login() {
           message={snack.message}
         />
       )}
-    </>
+
+      {/* {loading && <Loader />} */}
+    </Loader>
   );
 }
 
