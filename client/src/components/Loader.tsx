@@ -19,7 +19,7 @@ const useStyle = makeStyles({
 });
 
 function Loader(props: any) {
-  const { children, loading } = props;
+  const { children, loading = false } = props;
   const classes = useStyle();
 
   return (

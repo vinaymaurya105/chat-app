@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import Snackebar from "./Snackebar";
 import { SIGNUP } from "../constants/api";
 import Loader from "./Loader";
+import axios from "axios";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -39,17 +40,19 @@ enum ValueType {
   "cnfPass",
 }
 
+const defaultValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  cnfPass: "",
+  img: "",
+};
+
 function Signup() {
   const classes = useStyle();
 
-  const [values, setValues] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    cnfPass: "",
-    img: "",
-  });
+  const [values, setValues] = useState(defaultValues);
 
   const [show, setShow] = useState({ password: false, cnfPasswd: false });
   const [alert, setAlert] = useState({
@@ -87,10 +90,23 @@ function Signup() {
       url: SIGNUP,
       data: { firstName, lastName, email, password },
     };
+    setLoading(true);
+    axios(config)
+      .then((res) => {
+        const { success, message } = res.data;
+        if (!success) throw new Error(message);
+        setAlert({ open: true, variant: "success", message });
+        setLoading(false);
+        setValues(defaultValues);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setAlert({ open: true, variant: "error", message: err.message });
+      });
   };
 
   return (
-    <Loader loading>
+    <Loader loading={loading}>
       <HomePageLayout label="Signup">
         <Typography variant="body2">
           Already have an account? <Link to="/login">Log In</Link>
