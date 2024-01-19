@@ -19,12 +19,12 @@ const useStyle = makeStyles({
 });
 
 function Loader(props: any) {
-  const { children, active } = props;
+  const { children, loading } = props;
   const classes = useStyle();
 
   return (
     <Box className={classes.container}>
-      {active && (
+      {loading && (
         <Box className={classes.loader}>
           <CircularProgress color="primary" />
         </Box>

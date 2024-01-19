@@ -83,7 +83,7 @@ function Login() {
   };
 
   return (
-    <Loader active={loading}>
+    <Loader loading={loading}>
       <HomePageLayout label="Login">
         <Typography variant="body2">
           Don't have an account? <Link to="/signup">Create an account</Link>

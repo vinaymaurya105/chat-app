@@ -28,7 +28,7 @@ function Snackebar(props: SnackBarType) {
     <Snackbar
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       open={isShow}
-      autoHideDuration={1500}
+      autoHideDuration={2000}
       onClose={() => setOpen((prev: any) => ({ ...prev, open: false }))}
       TransitionComponent={Slide}
       color={variant === "error" ? "erro" : "success"}

@@ -13,6 +13,8 @@ import { ChangeEvent, useState } from "react";
 import HomePageLayout from "./HomePageLayout";
 import { Link } from "react-router-dom";
 import Snackebar from "./Snackebar";
+import { SIGNUP } from "../constants/api";
+import Loader from "./Loader";
 
 const useStyle: any = makeStyles(() => ({
   input: {
@@ -50,7 +52,12 @@ function Signup() {
   });
 
   const [show, setShow] = useState({ password: false, cnfPasswd: false });
-  const [alert, setAlert] = useState({ open: false, variant: "error" });
+  const [alert, setAlert] = useState({
+    open: false,
+    variant: "error",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
 
   const handleIconClick = (valType: "password" | "cnfPasswd") => {
     setShow((prev) => ({ ...prev, [valType]: !prev[valType] }));
@@ -66,135 +73,146 @@ function Signup() {
 
   const handleSignup = () => {
     if (values.password !== values.cnfPass) {
-      console.log("Please insert valid pass");
-      setAlert(() => ({ open: true, variant: "error" }));
+      setAlert(() => ({
+        open: true,
+        variant: "error",
+        message: "password and confirm password not matched",
+      }));
       return;
     }
+
+    const { firstName, lastName, email, password } = values || {};
+    const config = {
+      method: "POST",
+      url: SIGNUP,
+      data: { firstName, lastName, email, password },
+    };
   };
 
   return (
-    <HomePageLayout label="Signup">
-      <Typography variant="body2">
-        Already have an account? <Link to="/login">Log In</Link>
-      </Typography>
+    <Loader loading>
+      <HomePageLayout label="Signup">
+        <Typography variant="body2">
+          Already have an account? <Link to="/login">Log In</Link>
+        </Typography>
 
-      <Box className="wrapper">
-        <InputLabel required style={{ fontSize: 13 }}>
-          First Name
-        </InputLabel>
+        <Box className="wrapper">
+          <InputLabel required style={{ fontSize: 13 }}>
+            First Name
+          </InputLabel>
 
-        <TextField
-          className={classes.input}
-          sx={{ fieldset: { border: "none" } }}
-          placeholder="Please enter your first name"
-          required
-          fullWidth
-          value={values.firstName}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            handleField(e, "firstName")
-          }
-        />
-      </Box>
+          <TextField
+            className={classes.input}
+            sx={{ fieldset: { border: "none" } }}
+            placeholder="Please enter your first name"
+            required
+            fullWidth
+            value={values.firstName}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleField(e, "firstName")
+            }
+          />
+        </Box>
 
-      <Box className="wrapper">
-        <InputLabel required style={{ fontSize: 13 }}>
-          Last Name
-        </InputLabel>
+        <Box className="wrapper">
+          <InputLabel required style={{ fontSize: 13 }}>
+            Last Name
+          </InputLabel>
 
-        <TextField
-          className={classes.input}
-          sx={{ fieldset: { border: "none" } }}
-          placeholder="Please enter your last name"
-          required
-          fullWidth
-          value={values.lastName}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            handleField(e, "lastName")
-          }
-        />
-      </Box>
+          <TextField
+            className={classes.input}
+            sx={{ fieldset: { border: "none" } }}
+            placeholder="Please enter your last name"
+            required
+            fullWidth
+            value={values.lastName}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleField(e, "lastName")
+            }
+          />
+        </Box>
 
-      <Box className="wrapper">
-        <InputLabel required style={{ fontSize: 13 }}>
-          Email
-        </InputLabel>
+        <Box className="wrapper">
+          <InputLabel required style={{ fontSize: 13 }}>
+            Email
+          </InputLabel>
 
-        <TextField
-          className={classes.input}
-          sx={{ fieldset: { border: "none" } }}
-          placeholder="Please enter your email"
-          required
-          fullWidth
-          value={values.email}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            handleField(e, "email")
-          }
-        />
-      </Box>
+          <TextField
+            className={classes.input}
+            sx={{ fieldset: { border: "none" } }}
+            placeholder="Please enter your email"
+            required
+            fullWidth
+            value={values.email}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleField(e, "email")
+            }
+          />
+        </Box>
 
-      <Box className="wrapper">
-        <InputLabel required style={{ fontSize: 13 }}>
-          Password
-        </InputLabel>
+        <Box className="wrapper">
+          <InputLabel required style={{ fontSize: 13 }}>
+            Password
+          </InputLabel>
 
-        <TextField
-          className={classes.input}
-          sx={{ fieldset: { border: "none" } }}
-          placeholder="Please enter your password"
-          required
-          value={values.password}
-          type={show.password ? "text" : "password"}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end" style={{ marginLeft: 0 }}>
-                <IconButton
-                  size="small"
-                  onClick={() => handleIconClick("password")}
-                >
-                  {show.password ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          fullWidth
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            handleField(e, "password")
-          }
-        />
-      </Box>
+          <TextField
+            className={classes.input}
+            sx={{ fieldset: { border: "none" } }}
+            placeholder="Please enter your password"
+            required
+            value={values.password}
+            type={show.password ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end" style={{ marginLeft: 0 }}>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleIconClick("password")}
+                  >
+                    {show.password ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            fullWidth
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleField(e, "password")
+            }
+          />
+        </Box>
 
-      <Box className="wrapper">
-        <InputLabel required style={{ fontSize: 13 }}>
-          Confirm Password
-        </InputLabel>
+        <Box className="wrapper">
+          <InputLabel required style={{ fontSize: 13 }}>
+            Confirm Password
+          </InputLabel>
 
-        <TextField
-          className={classes.input}
-          sx={{ fieldset: { border: "none" } }}
-          placeholder="Please  confirm password"
-          required
-          fullWidth
-          value={values.cnfPass}
-          type={show.cnfPasswd ? "text" : "password"}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end" style={{ marginLeft: 0 }}>
-                <IconButton
-                  size="small"
-                  onClick={() => handleIconClick("cnfPasswd")}
-                >
-                  {show.cnfPasswd ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            handleField(e, "cnfPass")
-          }
-        />
-      </Box>
+          <TextField
+            className={classes.input}
+            sx={{ fieldset: { border: "none" } }}
+            placeholder="Please  confirm password"
+            required
+            fullWidth
+            value={values.cnfPass}
+            type={show.cnfPasswd ? "text" : "password"}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end" style={{ marginLeft: 0 }}>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleIconClick("cnfPasswd")}
+                  >
+                    {show.cnfPasswd ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleField(e, "cnfPass")
+            }
+          />
+        </Box>
 
-      {/* <Box className="wrapper">
+        {/* <Box className="wrapper">
         <InputLabel style={{ fontSize: 13 }}>Profile Picture</InputLabel>
 
         <TextField
@@ -207,22 +225,24 @@ function Signup() {
         />
       </Box> */}
 
-      <Button
-        variant="contained"
-        style={{ textTransform: "none", boxShadow: "none" }}
-        onClick={handleSignup}
-      >
-        Sign up
-      </Button>
+        <Button
+          variant="contained"
+          style={{ textTransform: "none", boxShadow: "none" }}
+          onClick={handleSignup}
+        >
+          Sign up
+        </Button>
 
-      {alert.open && (
-        <Snackebar
-          isShow={alert.open}
-          variant={alert.variant}
-          setOpen={setAlert}
-        />
-      )}
-    </HomePageLayout>
+        {alert.open && (
+          <Snackebar
+            isShow={alert.open}
+            variant={alert.variant}
+            setOpen={setAlert}
+            message={alert.message}
+          />
+        )}
+      </HomePageLayout>
+    </Loader>
   );
 }
 
