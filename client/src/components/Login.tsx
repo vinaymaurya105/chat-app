@@ -2,7 +2,6 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
-  CircularProgress,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -146,16 +145,14 @@ function Login() {
           Login
         </Button>
       </HomePageLayout>
-      {/* {snack.open && ( */}
-      <Snackebar
-        isShow={snack.open}
-        variant={snack.variant}
-        setOpen={setSnack}
-        message={snack.message}
-      />
-      {/* )} */}
-
-      {/* {loading && <Loader />} */}
+      {snack.open && (
+        <Snackebar
+          isShow={snack.open}
+          variant={snack.variant}
+          setOpen={setSnack}
+          message={snack.message}
+        />
+      )}
     </Loader>
   );
 }
