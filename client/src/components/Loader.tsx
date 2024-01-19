@@ -1,6 +1,5 @@
 import { Box, CircularProgress } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import React from "react";
 
 const useStyle = makeStyles({
   loader: {
@@ -22,7 +21,7 @@ const useStyle = makeStyles({
 function Loader(props: any) {
   const { children, active } = props;
   const classes = useStyle();
-  console.log(active);
+
   return (
     <Box className={classes.container}>
       {active && (

@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  Slide,
-  Snackbar,
-  SnackbarContent,
-} from "@mui/material";
-import { useEffect, useState } from "react";
+import { IconButton, Slide, Snackbar, SnackbarContent } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { makeStyles } from "@mui/styles";
 
@@ -29,7 +21,6 @@ type SnackBarType = {
 
 function Snackebar(props: SnackBarType) {
   const { isShow = false, variant, setOpen, message } = props;
-  console.log(props);
 
   const classes = useStyle(variant);
 
