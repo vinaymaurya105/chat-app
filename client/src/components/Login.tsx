@@ -12,7 +12,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useEffect, useState } from "react";
 import HomePageLayout from "./HomePageLayout";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Snackebar from "./Snackebar";
 import axios from "axios";
 import { LOGIN } from "../constants/api";
@@ -46,6 +46,8 @@ function Login() {
 
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleIconClick = () => {
     setShow((prev) => !prev);
   };
@@ -69,11 +71,11 @@ function Login() {
     axios(config)
       .then((res: any) => {
         const { success, message } = res.data;
-
         if (!success) throw Error(message);
 
         setSnack({ open: true, variant: "success", message });
         setLoading(false);
+        navigate("/chat");
       })
       .catch((err) => {
         setLoading(false);
@@ -144,14 +146,14 @@ function Login() {
           Login
         </Button>
       </HomePageLayout>
-      {snack.open && (
-        <Snackebar
-          isShow={snack.open}
-          variant={snack.variant}
-          setOpen={setSnack}
-          message={snack.message}
-        />
-      )}
+      {/* {snack.open && ( */}
+      <Snackebar
+        isShow={snack.open}
+        variant={snack.variant}
+        setOpen={setSnack}
+        message={snack.message}
+      />
+      {/* )} */}
 
       {/* {loading && <Loader />} */}
     </Loader>

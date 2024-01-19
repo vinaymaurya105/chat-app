@@ -11,6 +11,7 @@ function App() {
         <Routes>
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={Signup} />
+          <Route path="/chat" />
           <Route path="*" element={<Navigate to="/login" replace={true} />} />
         </Routes>
       </BrowserRouter>
