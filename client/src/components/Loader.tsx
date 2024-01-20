@@ -1,5 +1,6 @@
 import { Box, CircularProgress } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { ReactNode } from "react";
 
 const useStyle = makeStyles({
   loader: {
@@ -18,7 +19,12 @@ const useStyle = makeStyles({
   },
 });
 
-function Loader(props: any) {
+type LoaderType = {
+  children: ReactNode;
+  loading: boolean;
+};
+
+function Loader(props: LoaderType) {
   const { children, loading = false } = props;
   const classes = useStyle();
 

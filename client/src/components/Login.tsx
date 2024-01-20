@@ -17,7 +17,7 @@ import axios from "axios";
 import { LOGIN } from "../constants/api";
 import Loader from "./Loader";
 
-const useStyle: any = makeStyles(() => ({
+const useStyle = makeStyles(() => ({
   input: {
     "& .MuiOutlinedInput-root": {
       border: "1px solid #0000003b",
@@ -68,7 +68,7 @@ function Login() {
 
     setLoading(true);
     axios(config)
-      .then((res: any) => {
+      .then((res) => {
         const { success, message } = res.data;
         if (!success) throw Error(message);
 
@@ -83,8 +83,8 @@ function Login() {
   };
 
   return (
-    <Loader loading={loading}>
-      <HomePageLayout label="Login">
+    <>
+      <HomePageLayout label="Login" loading={loading}>
         <Typography variant="body2">
           Don't have an account? <Link to="/signup">Create an account</Link>
         </Typography>
@@ -153,7 +153,7 @@ function Login() {
           message={snack.message}
         />
       )}
-    </Loader>
+    </>
   );
 }
 
