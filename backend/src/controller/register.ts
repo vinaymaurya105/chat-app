@@ -49,8 +49,7 @@ export async function login(req: Request, res: Response) {
       { password: true, email: true }
     );
 
-    if (!user)
-      return res.json({ success: false, message: "user does not exist" });
+    if (!user) throw new Error("user does not exist");
 
     const isMatched = await bcrypt.compare(password, user.password);
 
@@ -59,7 +58,7 @@ export async function login(req: Request, res: Response) {
     const sessionId = crypto.randomBytes(10).toString("hex");
 
     const token = jwt.sign(
-      { userName, sessionId },
+      { email: userName, sessionId },
       process.env.SECRET_KEY as string,
       { expiresIn: process.env.EXPIRE_TIME }
     );
