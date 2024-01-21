@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { userModel } from "../model/user";
 
-async function getUser(req: Request, res: Response) {
+async function listusers(req: Request, res: Response) {
   const search = req.query.search as string;
   const userId = req.headers["x-user-id"];
   try {
@@ -23,11 +23,10 @@ async function getUser(req: Request, res: Response) {
       success: true,
       message: "Request successful",
       result: users,
-      user: userId,
     });
   } catch (error: any) {
     return res.json({ success: false, message: error.message || error });
   }
 }
 
-export default getUser;
+export default listusers;

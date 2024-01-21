@@ -23,7 +23,7 @@ async function main() {
   });
 
   // routes
-  app.use("/", router);
+  app.use("/api", router);
 
   app.listen(process.env.PORT, () =>
     console.log(`app was listening on  ${process.env.PORT}`)
