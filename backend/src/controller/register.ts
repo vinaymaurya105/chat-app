@@ -32,8 +32,8 @@ export async function registerUser(req: Request, res: Response) {
         id: user._id,
       },
     });
-  } catch (error: any) {
-    return res.json({ success: false, message: error.message });
+  } catch (error) {
+    return res.json({ success: false, message: (error as Error).message });
   }
 }
 
@@ -64,8 +64,8 @@ export async function login(req: Request, res: Response) {
     );
 
     return res.json({ success: true, message: "Login successful", token });
-  } catch (error: any) {
-    return res.json({ success: false, message: error.message });
+  } catch (error) {
+    return res.json({ success: false, message: (error as Error).message });
   }
 }
 
@@ -92,7 +92,10 @@ export async function listusers(req: Request, res: Response) {
       message: "Request successful",
       result: users,
     });
-  } catch (error: any) {
-    return res.json({ success: false, message: error.message || error });
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: (error as Error).message || error,
+    });
   }
 }

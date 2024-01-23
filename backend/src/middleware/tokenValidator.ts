@@ -24,8 +24,8 @@ async function tokenValidator(req: Request, res: Response, next: NextFunction) {
     req.headers["x-user-id"] = user._id.toString();
 
     next();
-  } catch (err: any) {
-    return res.send({ success: false, message: err.message || err });
+  } catch (err) {
+    return res.send({ success: false, message: (err as Error).message || err });
   }
 }
 

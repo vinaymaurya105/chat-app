@@ -9,7 +9,7 @@ async function userChat(req: Request, res: Response) {
     const isExist = await chatModel.find({ isGroupChat: false });
 
     return res.json({ success: true, message: "Requst successful" });
-  } catch (error: any) {
-    return res.json({ success: false, message: error.message });
+  } catch (error) {
+    return res.json({ success: false, message: (error as Error).message });
   }
 }
