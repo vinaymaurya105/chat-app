@@ -9,6 +9,6 @@ router.use("/user", UserRoutes);
 
 router.use("/", tokenValidator);
 
-router.unsubscribe("/chat", ChatRoutes);
+router.use("/chat", ChatRoutes);
 
 export default router;
