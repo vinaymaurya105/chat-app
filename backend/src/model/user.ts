@@ -8,10 +8,13 @@ const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   icon: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 export const userModel = model("users", UserSchema);
 
 export type User = InferSchemaType<typeof UserSchema> & {
   _id: ObjectId;
+  id: string | ObjectId;
 };

@@ -106,6 +106,12 @@
     //     "icon": ""
     //   }
     // ],
+    "createdBy":{ {
+        "id": "",
+        "label": "",
+        "email": "",
+        "icon": "",
+      }},
     "timestamp": "date"
   }
 }
