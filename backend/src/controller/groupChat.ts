@@ -22,7 +22,7 @@ export async function createGropuChat(req: Request, res: Response) {
   users?.push(userId);
 
   try {
-    if (!name) throw new Error("name is required in body");
+    if (!name) throw new Error("Name is required in body");
     if (!users || !Array.isArray(users) || users.length <= 0)
       throw new Error("Users should be array and contains atleast userId ");
 
@@ -75,6 +75,79 @@ export async function createGropuChat(req: Request, res: Response) {
     return res.json({
       success: true,
       message: "Group created succesfully",
+      result: {
+        id: _id,
+        chatName,
+        isGroupChat,
+        users: groupUsers,
+        createdBy,
+        timestamp: createdAt,
+      },
+    });
+  } catch (error) {
+    res.json({ success: false, message: (error as Error).message });
+  }
+}
+
+export async function renameGroup(req: Request, res: Response) {
+  const groupId = req.params.groupId;
+  const { name } = req.body;
+  const userId = req.headers["x-user-id"] as string;
+
+  try {
+    if (!name || typeof name !== "string")
+      throw new Error("Name is required and should be string");
+
+    const updatedGroupChat = await chatModel.findByIdAndUpdate(
+      groupId,
+      {
+        chatName: name,
+      },
+      { new: true }
+    );
+    if (!updatedGroupChat) throw new Error("GrouupId is not valid");
+
+    const {
+      _id,
+      chatName,
+      users: userIds,
+      groupAdmin,
+      isGroupChat,
+      createdAt,
+    } = updatedGroupChat;
+
+    const groupUsers = await userModel.aggregate([
+      { $match: { _id: { $in: userIds } } },
+      { $set: { admin: { $in: ["$_id", groupAdmin] } } },
+      {
+        $project: {
+          id: "$_id",
+          _id: false,
+          label: {
+            $trim: {
+              input: {
+                $concat: [
+                  { $ifNull: [`$firstName`, ""] },
+                  " ",
+                  { $ifNull: [`$lastName`, ""] },
+                ],
+              },
+            },
+          },
+          email: true,
+          icon: true,
+          admin: true,
+        },
+      },
+    ]);
+
+    const createdBy = groupUsers?.find(
+      (user: UserType) => user.id.toString() === userId
+    ) as UserType;
+
+    return res.json({
+      success: true,
+      message: "Updated successfully",
       result: {
         id: _id,
         chatName,
