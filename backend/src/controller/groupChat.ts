@@ -161,3 +161,17 @@ export async function renameGroup(req: Request, res: Response) {
     res.json({ success: false, message: (error as Error).message });
   }
 }
+
+export async function removeUser(req: Request, res: Response) {
+  const userId = req.headers["x-user-id"];
+  const user = req.body.user;
+
+  try {
+    if (!user) throw new Error("UserId is required in body");
+
+    chatModel.findByIdAndUpdate({ $pull: {} });
+    // const
+  } catch (error) {
+    res.json({ success: false, message: (error as Error).message });
+  }
+}

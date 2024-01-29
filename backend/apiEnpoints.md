@@ -207,13 +207,13 @@
 
 # Remove user from group
 
-- url :`chat/adduser`
-- method- `patch`
+- url :`chat/remove-user/groupId`
+- method- `put`
 
 ### body
 
 ```json
-{ "users": ["userId"] }
+{ "user": "userId" }
 ```
 
 ### Response
