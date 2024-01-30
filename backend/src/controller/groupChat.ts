@@ -165,12 +165,16 @@ export async function renameGroup(req: Request, res: Response) {
 export async function removeUser(req: Request, res: Response) {
   const userId = req.headers["x-user-id"];
   const user = req.body.user;
+  const { groupId } = req.params;
 
   try {
     if (!user) throw new Error("UserId is required in body");
 
-    chatModel.findByIdAndUpdate({ $pull: {} });
-    // const
+    await chatModel.findByIdAndUpdate(groupId, {
+      $pull: { users: user },
+    });
+
+    return res.json({ success: true, message: "User removed succesfully" });
   } catch (error) {
     res.json({ success: false, message: (error as Error).message });
   }

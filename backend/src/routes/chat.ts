@@ -11,6 +11,6 @@ const router = Router();
 router.post("/init", initChat);
 router.post("/", createGropuChat);
 router.patch("/:groupId", renameGroup);
-router.put("/remove-user", removeUser);
+router.put("/remove-user/:groupId", removeUser);
 
 export default router;
