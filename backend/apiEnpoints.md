@@ -234,23 +234,14 @@
         "icon": "",
         "admin": true // if userId in admin then true else false
       }
-    ],
-    // "groupAdmin": [
-    //   {
-    //     "id": "",
-    //     "label": "",
-    //     "email": "",
-    //     "icon": ""
-    //   }
-    // ],
-    "timestamp": "date"
+    ]
   }
 }
 ```
 
 # makeGroupAdmin
 
-url :`chat/admin/add`
+url :`chat/admin/chatId`
 
 - method- `patch`
 

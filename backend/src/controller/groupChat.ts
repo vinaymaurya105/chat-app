@@ -105,7 +105,7 @@ export async function renameGroup(req: Request, res: Response) {
       },
       { new: true }
     );
-    if (!updatedGroupChat) throw new Error("GrouupId is not valid");
+    if (!updatedGroupChat) throw new Error("GroupId is not valid");
 
     const {
       _id,
@@ -175,6 +175,68 @@ export async function removeUser(req: Request, res: Response) {
     });
 
     return res.json({ success: true, message: "User removed succesfully" });
+  } catch (error) {
+    res.json({ success: false, message: (error as Error).message });
+  }
+}
+
+export async function makeGroupAdmin(req: Request, res: Response) {
+  const userId = req.headers["x-user-id"];
+  const chatId = req.params?.chatId;
+
+  const user = req.body?.user;
+  try {
+    if (!user) throw new Error("userId is required");
+    const newData = await chatModel.findByIdAndUpdate(chatId, {
+      $push: { groupAdmin: user },
+    });
+
+    if (!newData) throw new Error("GroupId not valid");
+
+    const {
+      _id,
+      chatName,
+      users: userIds,
+      groupAdmin,
+      isGroupChat,
+      createdAt,
+    } = newData;
+
+    const groupUsers = await userModel.aggregate([
+      { $match: { _id: { $in: userIds } } },
+      { $set: { admin: { $in: ["$_id", groupAdmin] } } },
+      {
+        $project: {
+          id: "$_id",
+          _id: false,
+          label: {
+            $trim: {
+              input: {
+                $concat: [
+                  { $ifNull: [`$firstName`, ""] },
+                  " ",
+                  { $ifNull: [`$lastName`, ""] },
+                ],
+              },
+            },
+          },
+          email: true,
+          icon: true,
+          admin: true,
+        },
+      },
+    ]);
+    res.json({
+      success: true,
+      message: "Admin created succesfully",
+      result: {
+        id: _id,
+        chatName,
+        isGroupChat,
+        createdAt,
+        users: groupUsers,
+      },
+    });
   } catch (error) {
     res.json({ success: false, message: (error as Error).message });
   }
