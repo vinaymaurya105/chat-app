@@ -1,6 +1,6 @@
 import { Router } from "express";
 import tokenValidator from "../middleware/tokenValidator";
-import UserRoutes from "./userRoutes";
+import UserRoutes from "./user";
 import ChatRoutes from "./chat";
 
 const router = Router();
