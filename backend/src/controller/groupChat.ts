@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { chatModel } from "../model/chat";
 import { userModel } from "../model/user";
+import { getUserFromHeader } from "../../utils/helper";
 
 const ObjectId = mongoose.Types.ObjectId;
 type ObjectId = mongoose.Types.ObjectId;
@@ -240,4 +241,10 @@ export async function makeGroupAdmin(req: Request, res: Response) {
   } catch (error) {
     res.json({ success: false, message: (error as Error).message });
   }
+}
+
+export async function removeGroupAdmin(req: Request, res: Response) {
+  const userId = getUserFromHeader(req);
+
+  res.json({ success: true, message: "User removed sucessfully" });
 }
