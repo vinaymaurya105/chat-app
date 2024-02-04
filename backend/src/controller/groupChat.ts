@@ -164,12 +164,20 @@ export async function renameGroup(req: Request, res: Response) {
 }
 
 export async function removeUser(req: Request, res: Response) {
-  const userId = req.headers["x-user-id"];
   const user = req.body.user;
   const { groupId } = req.params;
 
   try {
     if (!user) throw new Error("UserId is required in body");
+
+    isValidId(groupId, "GroupId");
+    isValidId(user, "UserId");
+
+    const groupChat = await chatModel.findById(groupId, { createdBy: 1 });
+    if (!groupChat) throw new Error("GroupId is not valid");
+
+    if (groupChat.createdBy?.toString() === user)
+      throw new Error("Acces denied");
 
     await chatModel.findByIdAndUpdate(groupId, {
       $pull: { users: user },
@@ -182,10 +190,10 @@ export async function removeUser(req: Request, res: Response) {
 }
 
 export async function makeGroupAdmin(req: Request, res: Response) {
-  const userId = req.headers["x-user-id"];
   const chatId = req.params?.chatId;
 
   const user = req.body?.user;
+
   try {
     if (!user) throw new Error("userId is required");
     const newData = await chatModel.findByIdAndUpdate(chatId, {
@@ -251,8 +259,8 @@ export async function removeGroupAdmin(req: Request, res: Response) {
     if (!user) throw new Error("User is required");
 
     // validate objectid
-    isValidId(chatId, "chatId");
-    isValidId(user, "userId");
+    isValidId(chatId, "GroupId");
+    isValidId(user, "UserId");
 
     const isGroup = await chatModel.findById(chatId, { _id: 1, createdBy: 1 });
     if (!isGroup) throw new Error("GroupId is not valid");
