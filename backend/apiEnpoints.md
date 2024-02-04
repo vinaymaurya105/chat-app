@@ -284,3 +284,22 @@ url :`chat/admin/chatId`
 ```
 
 # Remove from group chat
+
+-url :`chat/remove-admin/chatId`
+
+- method- `patch`
+
+### body
+
+```json
+{ "user": "userId" }
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "message ": "User removed from admin succesfully"
+}
+```

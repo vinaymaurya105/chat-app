@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { chatModel } from "../model/chat";
 import { userModel } from "../model/user";
-import { getUserFromHeader } from "../../utils/helper";
+import { getUserFromHeader, isValidId } from "../../utils/helper";
 
 const ObjectId = mongoose.Types.ObjectId;
 type ObjectId = mongoose.Types.ObjectId;
@@ -244,7 +244,28 @@ export async function makeGroupAdmin(req: Request, res: Response) {
 }
 
 export async function removeGroupAdmin(req: Request, res: Response) {
-  const userId = getUserFromHeader(req);
+  const chatId = req.params.chatId;
 
-  res.json({ success: true, message: "User removed sucessfully" });
+  const user = req.body.user;
+  try {
+    if (!user) throw new Error("User is required");
+
+    // validate objectid
+    isValidId(chatId, "chatId");
+    isValidId(user, "userId");
+
+    const isGroup = await chatModel.findById(chatId, { _id: 1, createdBy: 1 });
+    if (!isGroup) throw new Error("GroupId is not valid");
+
+    if (isGroup.createdBy?.toString() === user)
+      throw new Error("Access denied");
+
+    await chatModel.findByIdAndUpdate(chatId, {
+      $pull: { groupAdmin: user },
+    });
+
+    res.json({ success: true, message: "User removed from admin succesfully" });
+  } catch (error) {
+    res.json({ success: false, message: (error as Error).message });
+  }
 }
