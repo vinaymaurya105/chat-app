@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Chat from "./components/Chat";
+import Header from "./components/chat/Header";
+import userListing from "./components/chat/UserListing";
 
 function App() {
   return (
@@ -12,7 +14,8 @@ function App() {
         <Routes>
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={Signup} />
-          <Route path="/chat" Component={Chat} />
+          <Route path="/chat" Component={userListing} />
+
           <Route path="*" element={<Navigate to="/login" replace={true} />} />
         </Routes>
       </BrowserRouter>
