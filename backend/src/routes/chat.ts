@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { initChat } from "../controller/chat";
+import { initChat, listAllChat } from "../controller/chat";
 import {
   createGropuChat,
   makeGroupAdmin,
@@ -10,6 +10,7 @@ import {
 
 const router = Router();
 
+router.get("/", listAllChat);
 router.post("/init", initChat);
 router.post("/", createGropuChat);
 router.put("/remove-user/:groupId", removeUser);

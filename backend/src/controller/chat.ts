@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { chatModel } from "../model/chat";
 import { userModel } from "../model/user";
 import mongoose from "mongoose";
+import { getUserFromHeader } from "../../utils/helper";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -98,5 +99,71 @@ export async function initChat(req: Request, res: Response) {
     });
   } catch (error) {
     return res.json({ success: false, message: (error as Error).message });
+  }
+}
+
+export async function listAllChat(req: Request, res: Response) {
+  const userId = getUserFromHeader(req);
+
+  try {
+    const chats = await chatModel.aggregate([
+      { $match: { users: new ObjectId(userId) } },
+      {
+        $lookup: {
+          let: { groupAdmin: "$groupAdmin" },
+          from: "users",
+          localField: "users",
+          foreignField: "_id",
+          as: "users",
+          pipeline: [
+            { $set: { admin: { $in: ["$_id", "$$groupAdmin"] } } },
+            {
+              $project: {
+                id: "$_id",
+                _id: false,
+                label: {
+                  $trim: {
+                    input: {
+                      $concat: [
+                        { $ifNull: [`$firstName`, ""] },
+                        " ",
+                        { $ifNull: [`$lastName`, ""] },
+                      ],
+                    },
+                  },
+                },
+                email: true,
+                icon: true,
+                admin: true,
+              },
+            },
+          ],
+        },
+      },
+
+      {
+        $lookup: {
+          from: "message",
+          localField: "latestMessage",
+          foreignField: "_id",
+          as: "latestMessage",
+        },
+      },
+      {
+        $project: {
+          id: "$_id",
+          _id: false,
+          chatName: true,
+          isGroupChat: true,
+          users: true,
+          timeStamp: "$createdAt",
+          latestMessage: { $arrayElemAt: ["$latestMessage", 0] },
+        },
+      },
+    ]);
+
+    res.json({ success: true, message: "Request succesful", result: chats });
+  } catch (error) {
+    res.json({ success: false, message: (error as Error).message });
   }
 }
