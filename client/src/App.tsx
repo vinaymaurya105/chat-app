@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import Chat from "./components/Chat";
+import Chat from "./components/chat/Chat";
 import Header from "./components/chat/Header";
 import userListing from "./components/chat/UserListing";
 

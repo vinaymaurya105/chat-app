@@ -10,6 +10,7 @@ import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { ChangeEvent, useState } from "react";
 import { Close } from "@mui/icons-material";
+import Profile from "../Profile";
 
 const useStyle = makeStyles(() => ({
   input: {
@@ -77,6 +78,8 @@ function userListing() {
           onChange={handleSearch}
         />
       </Box>
+
+      <Profile />
     </Box>
   );
 }
