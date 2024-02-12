@@ -9,7 +9,7 @@ import Header from "./Header";
 import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { ChangeEvent, useState } from "react";
-import { Close } from "@mui/icons-material";
+import { Close, Add } from "@mui/icons-material";
 import Profile from "../Profile";
 
 const useStyle = makeStyles(() => ({
@@ -22,6 +22,20 @@ const useStyle = makeStyles(() => ({
     "& .MuiFilledInput-input": {
       padding: 0,
       fontSize: 14,
+    },
+  },
+  button: {
+    height: 30,
+    "&.MuiButton-root": {
+      textTransform: "none",
+      color: "#212529",
+      background: "#e9ecef",
+      "&:hover": {
+        background: "#dee2e6",
+      },
+    },
+    "& .MuiButton-endIcon": {
+      marginLeft: 0,
     },
   },
 }));
@@ -43,7 +57,12 @@ function userListing() {
   return (
     <Box bgcolor="#fff" width={330} height="100%">
       <Header>
-        <Button>CreateChat</Button>
+        <Box display="flex" justifyContent="space-between">
+          <Profile />
+          <Button className={classes.button} endIcon={<Add />}>
+            New group
+          </Button>
+        </Box>
       </Header>
       <Box
         height={49}
@@ -79,7 +98,7 @@ function userListing() {
         />
       </Box>
 
-      <Profile />
+      {/* <Profile /> */}
     </Box>
   );
 }
