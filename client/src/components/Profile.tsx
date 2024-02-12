@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
 const imgValidation = "image/png,image/gif,image/jpg,image/jpeg";
 
 function Profile(props: ProfileType) {
-  const { size = 40, icon = "" } = props;
+  const { size = 40, icon = "", editable = false } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const anchoreRef = useRef<HTMLAnchorElement | null>(null);
@@ -81,12 +81,14 @@ function Profile(props: ProfileType) {
         width={size}
       >
         <Avatar src={img} style={{ height: size, width: size }} />
-        <Box
-          className={classes.editIconBox}
-          onClick={() => setOpen((prev) => !prev)}
-        >
-          <ModeEdit style={{ height: size / 2 }} />
-        </Box>
+        {editable && (
+          <Box
+            className={classes.editIconBox}
+            onClick={() => setOpen((prev) => !prev)}
+          >
+            <ModeEdit style={{ height: size / 2 }} />
+          </Box>
+        )}
         <Popper
           open={open}
           anchorEl={anchoreRef.current}
