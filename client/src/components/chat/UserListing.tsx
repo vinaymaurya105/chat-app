@@ -9,7 +9,7 @@ import Header from "./Header";
 import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { ChangeEvent, useState } from "react";
-import { Close, Add } from "@mui/icons-material";
+import { Close, Add, More, MoreVert } from "@mui/icons-material";
 import Profile from "../Profile";
 
 const useStyle = makeStyles(() => ({
@@ -59,9 +59,19 @@ function userListing() {
       <Header>
         <Box display="flex" justifyContent="space-between">
           <Profile />
-          <Button className={classes.button} endIcon={<Add />}>
-            New group
-          </Button>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            gap={0.5}
+          >
+            <Button className={classes.button} endIcon={<Add />}>
+              New group
+            </Button>
+            <IconButton size="small">
+              <MoreVert />
+            </IconButton>
+          </Box>
         </Box>
       </Header>
       <Box
