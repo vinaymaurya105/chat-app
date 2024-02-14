@@ -1,14 +1,20 @@
 import {
   Box,
   Button,
+  Fade,
+  Grow,
   IconButton,
   InputAdornment,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
   TextField,
 } from "@mui/material";
 import Header from "./Header";
 import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { Close, Add, More, MoreVert } from "@mui/icons-material";
 import Profile from "../Profile";
 
@@ -44,6 +50,8 @@ function userListing() {
   const classes = useStyle();
 
   const [search, setSearch] = useState("");
+  const [openList, setOpenList] = useState(false);
+  const anchorRef = useRef(null);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -54,6 +62,7 @@ function userListing() {
     setSearch("");
   };
 
+  console.log({ openList });
   return (
     <Box bgcolor="#fff" width={330} height="100%">
       <Header>
@@ -64,16 +73,47 @@ function userListing() {
             justifyContent="space-between"
             alignItems="center"
             gap={0.5}
+            ref={anchorRef}
           >
-            <Button className={classes.button} endIcon={<Add />}>
+            {/* <Button className={classes.button} endIcon={<Add />}>
               New group
-            </Button>
-            <IconButton size="small">
+            </Button> */}
+            <IconButton
+              size="small"
+              onClick={() => setOpenList((prev) => !prev)}
+            >
               <MoreVert />
             </IconButton>
           </Box>
         </Box>
       </Header>
+
+      <Popper
+        open={openList}
+        anchorEl={anchorRef.current}
+        transition
+        style={{ zIndex: 1300 }}
+        placement="bottom-end"
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === "bottom" ? "bottom end" : "bottom end",
+            }}
+          >
+            <Paper elevation={0}>
+              <MenuList id="menu-list-grow">
+                <MenuItem style={{ fontSize: 12 }}>My profile</MenuItem>
+                <MenuItem style={{ fontSize: 12 }}>New Group</MenuItem>
+                <MenuItem style={{ fontSize: 12 }}>Logout</MenuItem>
+              </MenuList>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+
       <Box
         height={49}
         display="flex"
@@ -107,8 +147,6 @@ function userListing() {
           onChange={handleSearch}
         />
       </Box>
-
-      {/* <Profile /> */}
     </Box>
   );
 }
