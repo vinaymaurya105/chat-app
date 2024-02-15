@@ -15,7 +15,7 @@ import Header from "./Header";
 import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { ChangeEvent, useRef, useState } from "react";
-import { Close, Add, More, MoreVert } from "@mui/icons-material";
+import { Close, Add, More, MoreVert, Notifications } from "@mui/icons-material";
 import Profile from "../Profile";
 
 const useStyle = makeStyles(() => ({
@@ -78,6 +78,7 @@ function userListing() {
             {/* <Button className={classes.button} endIcon={<Add />}>
               New group
             </Button> */}
+            <Notifications />
             <IconButton
               size="small"
               onClick={() => setOpenList((prev) => !prev)}
@@ -92,7 +93,7 @@ function userListing() {
         open={openList}
         anchorEl={anchorRef.current}
         transition
-        style={{ zIndex: 1300 }}
+        style={{ zIndex: 1300, transition: "width 2s" }}
         placement="bottom-end"
       >
         {({ TransitionProps, placement }) => (
@@ -105,7 +106,12 @@ function userListing() {
           >
             <Paper elevation={0}>
               <MenuList id="menu-list-grow">
-                <MenuItem style={{ fontSize: 12 }}>My profile</MenuItem>
+                <MenuItem
+                  style={{ fontSize: 12 }}
+                  onClick={() => console.log("hello")}
+                >
+                  My profile
+                </MenuItem>
                 <MenuItem style={{ fontSize: 12 }}>New Group</MenuItem>
                 <MenuItem style={{ fontSize: 12 }}>Logout</MenuItem>
               </MenuList>
