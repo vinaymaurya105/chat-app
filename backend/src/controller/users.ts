@@ -99,3 +99,7 @@ export async function listusers(req: Request, res: Response) {
     });
   }
 }
+
+export async function LogoutUser(req: Request, res: Response) {
+  return res.send({ success: true, message: "User logout sucessfully" });
+}

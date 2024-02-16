@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { listusers, login, registerUser } from "../controller/users";
+import {
+  LogoutUser,
+  listusers,
+  login,
+  registerUser,
+} from "../controller/users";
 import tokenValidator from "../middleware/tokenValidator";
 
 const router = Router();
@@ -7,5 +12,6 @@ const router = Router();
 router.get("/", tokenValidator, listusers);
 router.post("/register", registerUser);
 router.post("/login", login);
+router.post("/logout", LogoutUser);
 
 export default router;
