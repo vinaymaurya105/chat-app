@@ -1,7 +1,5 @@
 import {
   Box,
-  Button,
-  Fade,
   Grow,
   IconButton,
   InputAdornment,
@@ -10,12 +8,21 @@ import {
   Paper,
   Popper,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import Header from "./Header";
 import { makeStyles } from "@mui/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import { ChangeEvent, useRef, useState } from "react";
-import { Close, Add, More, MoreVert, Notifications } from "@mui/icons-material";
+import {
+  Close,
+  Add,
+  More,
+  MoreVert,
+  Notifications,
+  NotificationsNone,
+  GroupAddOutlined,
+} from "@mui/icons-material";
 import Profile from "../Profile";
 
 const useStyle = makeStyles(() => ({
@@ -75,16 +82,53 @@ function userListing() {
             gap={0.5}
             ref={anchorRef}
           >
-            {/* <Button className={classes.button} endIcon={<Add />}>
-              New group
-            </Button> */}
-            <Notifications />
-            <IconButton
-              size="small"
-              onClick={() => setOpenList((prev) => !prev)}
+            <Tooltip
+              title="Notifications"
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    fontSize: "12px",
+                  },
+                },
+              }}
             >
-              <MoreVert />
-            </IconButton>
+              <IconButton size="small">
+                <NotificationsNone />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip
+              title="New Group"
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    fontSize: "12px",
+                  },
+                },
+              }}
+            >
+              <IconButton size="small">
+                <GroupAddOutlined />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip
+              title="Menu"
+              componentsProps={{
+                tooltip: {
+                  sx: {
+                    fontSize: "12px",
+                  },
+                },
+              }}
+            >
+              <IconButton
+                size="small"
+                onClick={() => setOpenList((prev) => !prev)}
+              >
+                <MoreVert />
+              </IconButton>
+            </Tooltip>
           </Box>
         </Box>
       </Header>
