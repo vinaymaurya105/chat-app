@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   ClickAwayListener,
   Grow,
@@ -54,7 +55,8 @@ const useStyle = makeStyles(() => ({
   },
 }));
 
-function MainHeader() {
+function MainHeader(props: any) {
+  const { handleProfie } = props;
   const classes = useStyle();
 
   const [search, setSearch] = useState("");
@@ -68,6 +70,15 @@ function MainHeader() {
 
   const handleCancel = () => {
     setSearch("");
+  };
+
+  const handleClickAway = () => {
+    setOpenList(false);
+  };
+
+  const handleMyProfile = () => {
+    handleClickAway();
+    handleProfie();
   };
 
   return (
@@ -93,7 +104,9 @@ function MainHeader() {
               }}
             >
               <IconButton size="small">
-                <NotificationsNone />
+                <Badge badgeContent={1} color="primary">
+                  <NotificationsNone />
+                </Badge>
               </IconButton>
             </Tooltip>
 
@@ -149,12 +162,9 @@ function MainHeader() {
             }}
           >
             <Paper elevation={0}>
-              <ClickAwayListener onClickAway={() => setOpenList(false)}>
+              <ClickAwayListener onClickAway={handleClickAway}>
                 <MenuList id="menu-list-grow">
-                  <MenuItem
-                    style={{ fontSize: 12 }}
-                    onClick={() => console.log("hello")}
-                  >
+                  <MenuItem style={{ fontSize: 12 }} onClick={handleMyProfile}>
                     My profile
                   </MenuItem>
                   <MenuItem style={{ fontSize: 12 }}>New Group</MenuItem>
