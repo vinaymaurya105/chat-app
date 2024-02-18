@@ -1,13 +1,35 @@
-import { West } from "@mui/icons-material";
-import { Box, Drawer, IconButton, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Done, Edit, West } from "@mui/icons-material";
+import {
+  Box,
+  Drawer,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+  makeStyles,
+} from "@mui/material";
 import Profile from "./Profile";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+
+const useStyles: any = makeStyles(() => ({
+  input: {
+    "& .MuiInputBase": {
+      border: "none",
+    },
+  },
+}));
 
 function MyProfile(props: any) {
   const { open, handleProfie } = props;
-  const [isEdit, setIsEdit] = useState(false);
-  const [name, setName] = useState("");
+
+  const classes = useStyles();
+  const [isEdit, setIsEdit] = useState({ name: false, about: false });
+  const [values, setValues] = useState({ name: "", about: "" });
+
+  const handleField = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setValues((prev) => ({ ...prev, name: value }));
+  };
 
   return (
     <Drawer open={open}>
@@ -50,10 +72,54 @@ function MyProfile(props: any) {
           boxShadow="0 1px 5px rgba(11,20,26,0.08)"
           bgcolor="#fff"
         >
-          <Typography variant="body2" color="#008069">
+          <Typography variant="body2" color="#ccc5b9">
             Your name
           </Typography>
-          <Typography>Vinay Kumar Maurya</Typography>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            gap={1}
+          >
+            {/* <Typography>Vinay Kumar Maurya</Typography> */}
+
+            <TextField
+              placeholder="nnn"
+              variant="standard"
+              inputProps={{
+                maxLength: 25,
+              }}
+              InputProps={{
+                readOnly: !isEdit.name,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    {isEdit.name ? (
+                      <Box display="flex" gap={1}>
+                        <Typography variant="body2" color="#d6ccc2">
+                          {25 - values.name.length}
+                        </Typography>
+
+                        <IconButton style={{ height: 24, width: 24 }}>
+                          <Done />
+                        </IconButton>
+                      </Box>
+                    ) : (
+                      <IconButton style={{ height: 24, width: 24 }}>
+                        <Edit />
+                      </IconButton>
+                    )}
+                  </InputAdornment>
+                ),
+                disableUnderline: !isEdit.name,
+              }}
+              onChange={handleField}
+              fullWidth
+              value={values.name}
+            />
+            {/* <IconButton style={{ height: 24, width: 24 }}>
+              <Edit />
+            </IconButton> */}
+          </Box>
         </Box>
 
         <Box p="20px 20px 28px 30px" boxSizing="border-box" width="380px">
@@ -71,7 +137,7 @@ function MyProfile(props: any) {
           bgcolor="#fff"
         >
           <Typography variant="body2" color="#008069">
-            Email
+            About
           </Typography>
           <Typography>vinaymaurya@gmail.com</Typography>
         </Box>
