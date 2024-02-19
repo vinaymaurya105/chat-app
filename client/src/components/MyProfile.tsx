@@ -6,33 +6,102 @@ import {
   InputAdornment,
   TextField,
   Typography,
-  makeStyles,
 } from "@mui/material";
 import Profile from "./Profile";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { makeStyles } from "@mui/styles";
 
 const useStyles: any = makeStyles(() => ({
   input: {
-    "& .MuiInputBase": {
-      border: "none",
+    "& .MuiInputBase-root": {
+      border: "1px solid red",
     },
   },
 }));
 
+function InputField(props: any) {
+  const {
+    onChange,
+    editable = false,
+    value,
+    handleEdit,
+    limit = false,
+    onSave,
+  } = props;
+
+  return (
+    <TextField
+      variant="standard"
+      inputProps={
+        limit
+          ? {
+              maxLength: 25,
+            }
+          : {}
+      }
+      InputProps={{
+        readOnly: !editable,
+        endAdornment: (
+          <InputAdornment position="end">
+            {editable ? (
+              <Box display="flex" gap={1}>
+                {limit && (
+                  <Typography variant="body2" color="#ccc5b9">
+                    {25 - value.length}
+                  </Typography>
+                )}
+
+                <IconButton style={{ height: 24, width: 24 }} onClick={onSave}>
+                  <Done />
+                </IconButton>
+              </Box>
+            ) : (
+              <IconButton
+                style={{ height: 24, width: 24 }}
+                onClick={handleEdit}
+              >
+                <Edit />
+              </IconButton>
+            )}
+          </InputAdornment>
+        ),
+        disableUnderline: true,
+      }}
+      onChange={onChange}
+      fullWidth
+      value={value}
+      style={editable ? { borderBottom: "2px solid #adb5bd" } : {}}
+    />
+  );
+}
+
 function MyProfile(props: any) {
   const { open, handleProfie } = props;
 
-  const classes = useStyles();
   const [isEdit, setIsEdit] = useState({ name: false, about: false });
   const [values, setValues] = useState({ name: "", about: "" });
 
-  const handleField = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleField = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     const value = event.target.value;
-    setValues((prev) => ({ ...prev, name: value }));
+    setValues((prev) => ({ ...prev, [type]: value }));
+  };
+
+  const handleEdit = (label: string) => {
+    setIsEdit((prev) => ({ ...prev, [label]: true }));
+  };
+
+  const handleSave = (prop: string) => {
+    if (prop === "name") {
+      console.log({ name: values.name });
+      return;
+    }
+    if (prop === "about") {
+      console.log({ anout: values.about });
+    }
   };
 
   return (
-    <Drawer open={open}>
+    <Drawer open={open} hideBackdrop elevation={0}>
       <Box bgcolor="#F0F2F5" height="100%" width={380} boxSizing="border-box">
         <Box display="flex" bgcolor="#008069" color="#fff" p="10px">
           <IconButton
@@ -72,7 +141,7 @@ function MyProfile(props: any) {
           boxShadow="0 1px 5px rgba(11,20,26,0.08)"
           bgcolor="#fff"
         >
-          <Typography variant="body2" color="#ccc5b9">
+          <Typography variant="body2" color="#008069">
             Your name
           </Typography>
           <Box
@@ -81,44 +150,16 @@ function MyProfile(props: any) {
             justifyContent="space-between"
             gap={1}
           >
-            {/* <Typography>Vinay Kumar Maurya</Typography> */}
-
-            <TextField
-              placeholder="nnn"
-              variant="standard"
-              inputProps={{
-                maxLength: 25,
-              }}
-              InputProps={{
-                readOnly: !isEdit.name,
-                endAdornment: (
-                  <InputAdornment position="end">
-                    {isEdit.name ? (
-                      <Box display="flex" gap={1}>
-                        <Typography variant="body2" color="#d6ccc2">
-                          {25 - values.name.length}
-                        </Typography>
-
-                        <IconButton style={{ height: 24, width: 24 }}>
-                          <Done />
-                        </IconButton>
-                      </Box>
-                    ) : (
-                      <IconButton style={{ height: 24, width: 24 }}>
-                        <Edit />
-                      </IconButton>
-                    )}
-                  </InputAdornment>
-                ),
-                disableUnderline: !isEdit.name,
-              }}
-              onChange={handleField}
-              fullWidth
+            <InputField
               value={values.name}
+              limit
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                handleField(e, "name")
+              }
+              handleEdit={() => handleEdit("name")}
+              editable={isEdit.name}
+              onSave={() => handleSave("name")}
             />
-            {/* <IconButton style={{ height: 24, width: 24 }}>
-              <Edit />
-            </IconButton> */}
           </Box>
         </Box>
 
@@ -139,7 +180,15 @@ function MyProfile(props: any) {
           <Typography variant="body2" color="#008069">
             About
           </Typography>
-          <Typography>vinaymaurya@gmail.com</Typography>
+          <InputField
+            value={values.about}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleField(e, "about")
+            }
+            handleEdit={() => handleEdit("about")}
+            editable={isEdit.about}
+            onSave={() => handleSave("about")}
+          />
         </Box>
       </Box>
     </Drawer>

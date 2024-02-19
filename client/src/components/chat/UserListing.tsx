@@ -15,10 +15,13 @@ function userListing() {
   const handleProfie = () => {
     setOpenProfile((prev) => !prev);
   };
+
   return (
     <Box bgcolor="#fff" width={380} height="100%">
       <MainHeader handleProfie={handleProfie} />
-      <MyProfile open={openProfile} handleProfie={handleProfie} />
+      {openProfile && (
+        <MyProfile open={openProfile} handleProfie={handleProfie} />
+      )}
     </Box>
   );
 }
