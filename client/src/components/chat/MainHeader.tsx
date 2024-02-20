@@ -85,7 +85,13 @@ function MainHeader(props: any) {
     <Box>
       <Header>
         <Box display="flex" justifyContent="space-between">
-          <Profile />
+          <Box
+            onClick={handleMyProfile}
+            borderRadius="50%"
+            style={{ cursor: "pointer" }}
+          >
+            <Profile />
+          </Box>
           <Box
             display="flex"
             justifyContent="space-between"

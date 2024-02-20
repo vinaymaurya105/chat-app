@@ -73,7 +73,7 @@ function Profile(props: ProfileType) {
     setImage("");
   };
   return (
-    <Box>
+    <Box borderRadius="50%">
       <Box
         ref={anchoreRef}
         className={classes.container}

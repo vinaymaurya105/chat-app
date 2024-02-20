@@ -12,10 +12,28 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 
 const useStyles: any = makeStyles(() => ({
-  input: {
-    "& .MuiInputBase-root": {
-      border: "1px solid red",
-    },
+  wrapper: {
+    height: 60,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 380,
+    boxSizing: "border-box",
+  },
+  container: {
+    padding: "14px 30px",
+    display: "flex",
+    gap: 12,
+    flexDirection: "column",
+    boxShadow: "0 1px 5px rgba(11,20,26,0.08)",
+    background: "#fff",
+  },
+  profile: {
+    padding: "28px 0",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxSizing: "border-box",
   },
 }));
 
@@ -77,9 +95,13 @@ function InputField(props: any) {
 
 function MyProfile(props: any) {
   const { open, handleProfie } = props;
+  const classes = useStyles();
 
   const [isEdit, setIsEdit] = useState({ name: false, about: false });
-  const [values, setValues] = useState({ name: "", about: "" });
+  const [values, setValues] = useState({
+    name: "Vinay Kumar Maurya",
+    about: "Battery about to die",
+  });
 
   const handleField = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     const value = event.target.value;
@@ -111,36 +133,16 @@ function MyProfile(props: any) {
             <West />
           </IconButton>
 
-          <Box
-            height={60}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            width={380}
-            boxSizing="border-box"
-          >
+          <Box className={classes.wrapper}>
             <Typography variant="h6">My Profile</Typography>
           </Box>
         </Box>
 
-        <Box
-          p="28px 0"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          boxSizing="border-box"
-        >
+        <Box className={classes.profile}>
           <Profile size={200} editable />
         </Box>
 
-        <Box
-          p="14px 30px"
-          display="flex"
-          gap={1.5}
-          flexDirection="column"
-          boxShadow="0 1px 5px rgba(11,20,26,0.08)"
-          bgcolor="#fff"
-        >
+        <Box className={classes.container}>
           <Typography variant="body2" color="#008069">
             Your name
           </Typography>
@@ -169,14 +171,7 @@ function MyProfile(props: any) {
             contacts
           </Typography>
         </Box>
-        <Box
-          p="14px 30px"
-          display="flex"
-          gap={1.5}
-          flexDirection="column"
-          boxShadow="0 1px 5px rgba(11,20,26,0.08)"
-          bgcolor="#fff"
-        >
+        <Box className={classes.container}>
           <Typography variant="body2" color="#008069">
             About
           </Typography>
