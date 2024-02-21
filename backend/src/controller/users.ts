@@ -45,8 +45,8 @@ export async function login(req: Request, res: Response) {
       throw new Error("userName and password is required");
 
     const user = await userModel.findOne(
-      { email: userName.toLowerCase() },
-      { password: true, email: true }
+      { email: userName.toLowerCase() }
+      // { password: true, email: true }
     );
 
     if (!user) throw new Error("user does not exist");
@@ -63,7 +63,21 @@ export async function login(req: Request, res: Response) {
       { expiresIn: process.env.EXPIRE_TIME }
     );
 
-    return res.json({ success: true, message: "Login successful", token });
+    const firstName = user.firstName ? user.firstName : "";
+    const lastName = user.lastName ? user.lastName : "";
+
+    return res.json({
+      success: true,
+      message: "Login successful",
+      result: {
+        id: user.id,
+        label: `${firstName}  ${lastName}`.trim(),
+        subLabel: user.email,
+        icon: user.icon,
+        about: user?.about,
+        token,
+      },
+    });
   } catch (error) {
     return res.json({ success: false, message: (error as Error).message });
   }
