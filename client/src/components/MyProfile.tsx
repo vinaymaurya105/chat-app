@@ -99,7 +99,7 @@ function MyProfile(props: any) {
 
   const [isEdit, setIsEdit] = useState({ name: false, about: false });
   const [values, setValues] = useState({
-    name: "Vinay Kumar Maurya",
+    name: "Vinay ",
     about: "Battery about to die",
   });
 
@@ -121,6 +121,13 @@ function MyProfile(props: any) {
       console.log({ anout: values.about });
     }
   };
+
+  useEffect(() => {
+    const userRec = localStorage.getItem("user") as string;
+    const { label, about } = JSON.parse(userRec);
+    setValues({ name: label, about });
+    // console.log(JSON.parse(userRec));
+  }, []);
 
   return (
     <Drawer open={open} hideBackdrop elevation={0}>

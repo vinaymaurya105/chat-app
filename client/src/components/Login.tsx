@@ -69,9 +69,10 @@ function Login() {
     setLoading(true);
     axios(config)
       .then((res) => {
-        const { success, message } = res.data;
+        const { success, message, result } = res.data;
         if (!success) throw Error(message);
-
+        const userData = JSON.stringify(result);
+        localStorage.setItem("user", userData);
         setSnack({ open: true, variant: "success", message });
         setLoading(false);
         navigate("/chat");
