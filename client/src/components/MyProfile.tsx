@@ -36,6 +36,7 @@ const useStyles: any = makeStyles(() => ({
     boxSizing: "border-box",
   },
 }));
+type userType = { id: string; label: string; about: string; subLabel?: string };
 
 function InputField(props: any) {
   const {
@@ -93,14 +94,16 @@ function InputField(props: any) {
   );
 }
 
+const defUser = { name: "", about: "" };
 function MyProfile(props: any) {
   const { open, handleProfie } = props;
   const classes = useStyles();
 
-  const [isEdit, setIsEdit] = useState({ name: false, about: false });
-  const [values, setValues] = useState({
-    name: "Vinay ",
-    about: "Battery about to die",
+  const [isEdit, setIsEdit] = useState(defUser);
+  const [values, setValues] = useState<userType>({
+    id: "",
+    label: "",
+    about: "",
   });
 
   const handleField = (event: ChangeEvent<HTMLInputElement>, type: string) => {
@@ -114,19 +117,17 @@ function MyProfile(props: any) {
 
   const handleSave = (prop: string) => {
     if (prop === "name") {
-      console.log({ name: values.name });
       return;
     }
     if (prop === "about") {
-      console.log({ anout: values.about });
     }
   };
 
+  console.log(values);
   useEffect(() => {
     const userRec = localStorage.getItem("user") as string;
-    const { label, about } = JSON.parse(userRec);
-    setValues({ name: label, about });
-    // console.log(JSON.parse(userRec));
+    const user = JSON.parse(userRec);
+    setValues(user || defUser);
   }, []);
 
   return (
@@ -160,10 +161,10 @@ function MyProfile(props: any) {
             gap={1}
           >
             <InputField
-              value={values.name}
+              value={values?.label}
               limit
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleField(e, "name")
+                handleField(e, "label")
               }
               handleEdit={() => handleEdit("name")}
               editable={isEdit.name}
@@ -183,7 +184,7 @@ function MyProfile(props: any) {
             About
           </Typography>
           <InputField
-            value={values.about}
+            value={values?.about}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               handleField(e, "about")
             }

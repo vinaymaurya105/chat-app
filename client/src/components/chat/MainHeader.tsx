@@ -26,6 +26,9 @@ import {
   GroupAddOutlined,
 } from "@mui/icons-material";
 import Profile from "../Profile";
+import axios from "axios";
+import { LOGOUT_USER } from "../../constants/api";
+import { useNavigate } from "react-router-dom";
 
 const useStyle = makeStyles(() => ({
   input: {
@@ -62,6 +65,7 @@ function MainHeader(props: any) {
   const [search, setSearch] = useState("");
   const [openList, setOpenList] = useState(false);
   const anchorRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -79,6 +83,25 @@ function MainHeader(props: any) {
   const handleMyProfile = () => {
     handleClickAway();
     handleProfie();
+  };
+
+  const handleLogout = () => {
+    const user = JSON.parse(localStorage.getItem("user") as string);
+    if (!user) return;
+    const config = {
+      method: "POST",
+      url: LOGOUT_USER,
+      headers: { authorization: `Bearer ${user.token}` },
+    };
+    axios(config)
+      .then((res) => {
+        const { success, message } = res.data;
+        if (!success) throw new Error(message);
+        handleClickAway();
+        localStorage.removeItem("user");
+        navigate("/login");
+      })
+      .catch((err: any) => console.log(err.message || err));
   };
 
   return (
@@ -174,7 +197,9 @@ function MainHeader(props: any) {
                     My profile
                   </MenuItem>
                   <MenuItem style={{ fontSize: 12 }}>New Group</MenuItem>
-                  <MenuItem style={{ fontSize: 12 }}>Logout</MenuItem>
+                  <MenuItem style={{ fontSize: 12 }} onClick={handleLogout}>
+                    Logout
+                  </MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>
