@@ -13,7 +13,7 @@ import { ChangeEvent, useState } from "react";
 import HomePageLayout from "./HomePageLayout";
 import { Link } from "react-router-dom";
 import Snackebar from "./Snackebar";
-import { SIGNUP } from "../constants/api";
+import { SIGNUP } from "../utils/constants/api";
 import Loader from "./Loader";
 import axios from "axios";
 

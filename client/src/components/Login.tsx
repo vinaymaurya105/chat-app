@@ -14,7 +14,7 @@ import HomePageLayout from "./HomePageLayout";
 import { Link, useNavigate } from "react-router-dom";
 import Snackebar from "./Snackebar";
 import axios from "axios";
-import { LOGIN } from "../constants/api";
+import { LOGIN } from "../utils/constants/api";
 import Loader from "./Loader";
 
 const useStyle = makeStyles(() => ({

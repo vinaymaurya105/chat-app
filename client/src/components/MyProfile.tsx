@@ -10,6 +10,7 @@ import {
 import Profile from "./Profile";
 import { ChangeEvent, useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
+import { getLoginUserRecord } from "../utils/helper";
 
 const useStyles: any = makeStyles(() => ({
   wrapper: {
@@ -123,10 +124,8 @@ function MyProfile(props: any) {
     }
   };
 
-  console.log(values);
   useEffect(() => {
-    const userRec = localStorage.getItem("user") as string;
-    const user = JSON.parse(userRec);
+    const user = getLoginUserRecord();
     setValues(user || defUser);
   }, []);
 

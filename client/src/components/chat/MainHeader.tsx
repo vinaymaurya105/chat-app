@@ -27,8 +27,11 @@ import {
 } from "@mui/icons-material";
 import Profile from "../Profile";
 import axios from "axios";
-import { LOGOUT_USER } from "../../constants/api";
+import { LOGOUT_USER } from "../../utils/constants/api";
 import { useNavigate } from "react-router-dom";
+import { getLoginUserRecord } from "../../utils/helper";
+import Snackebar from "../Snackebar";
+import Loader from "../Loader";
 
 const useStyle = makeStyles(() => ({
   input: {
@@ -66,6 +69,12 @@ function MainHeader(props: any) {
   const [openList, setOpenList] = useState(false);
   const anchorRef = useRef(null);
   const navigate = useNavigate();
+  const [loader, setLoader] = useState({
+    open: false,
+    variant: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -86,160 +95,178 @@ function MainHeader(props: any) {
   };
 
   const handleLogout = () => {
-    const user = JSON.parse(localStorage.getItem("user") as string);
+    const user = getLoginUserRecord();
     if (!user) return;
     const config = {
       method: "POST",
       url: LOGOUT_USER,
       headers: { authorization: `Bearer ${user.token}` },
     };
+    setLoading(true);
     axios(config)
       .then((res) => {
         const { success, message } = res.data;
         if (!success) throw new Error(message);
+        setLoader({ open: true, variant: "success", message });
+        setLoading(false);
         handleClickAway();
         localStorage.removeItem("user");
         navigate("/login");
       })
-      .catch((err: any) => console.log(err.message || err));
+      .catch((err: any) => {
+        setLoading(false);
+        setLoader({ open: true, variant: "error", message: err.message });
+      });
   };
 
   return (
     <Box>
-      <Header>
-        <Box display="flex" justifyContent="space-between">
-          <Box
-            onClick={handleMyProfile}
-            borderRadius="50%"
-            style={{ cursor: "pointer" }}
-          >
-            <Profile />
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            gap={1}
-            ref={anchorRef}
-          >
-            <Tooltip
-              title="Notifications"
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    fontSize: "12px",
-                  },
-                },
-              }}
+      <Loader loading={loading}>
+        <Header>
+          <Box display="flex" justifyContent="space-between">
+            <Box
+              onClick={handleMyProfile}
+              borderRadius="50%"
+              style={{ cursor: "pointer" }}
             >
-              <IconButton size="small">
-                <Badge badgeContent={1} color="primary">
-                  <NotificationsNone />
-                </Badge>
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip
-              title="New Group"
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    fontSize: "12px",
-                  },
-                },
-              }}
+              <Profile />
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={1}
+              ref={anchorRef}
             >
-              <IconButton size="small">
-                <GroupAddOutlined />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip
-              title="Menu"
-              componentsProps={{
-                tooltip: {
-                  sx: {
-                    fontSize: "12px",
+              <Tooltip
+                title="Notifications"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      fontSize: "12px",
+                    },
                   },
-                },
-              }}
-            >
-              <IconButton
-                size="small"
-                onClick={() => setOpenList((prev) => !prev)}
+                }}
               >
-                <MoreVert />
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Box>
-      </Header>
-
-      <Popper
-        open={openList}
-        anchorEl={anchorRef.current}
-        transition
-        style={{ zIndex: 1300, transition: "width 2s" }}
-        placement="bottom-end"
-      >
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === "bottom" ? "bottom end" : "bottom end",
-            }}
-          >
-            <Paper elevation={0}>
-              <ClickAwayListener onClickAway={handleClickAway}>
-                <MenuList id="menu-list-grow">
-                  <MenuItem style={{ fontSize: 12 }} onClick={handleMyProfile}>
-                    My profile
-                  </MenuItem>
-                  <MenuItem style={{ fontSize: 12 }}>New Group</MenuItem>
-                  <MenuItem style={{ fontSize: 12 }} onClick={handleLogout}>
-                    Logout
-                  </MenuItem>
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-
-      <Box
-        height={49}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        p="0 15px"
-      >
-        <TextField
-          fullWidth
-          className={classes.input}
-          variant="filled"
-          placeholder="Searh or start new chat"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" style={{ marginTop: 0 }}>
                 <IconButton size="small">
-                  <SearchIcon />
+                  <Badge badgeContent={1} color="primary">
+                    <NotificationsNone />
+                  </Badge>
                 </IconButton>
-              </InputAdornment>
-            ),
-            disableUnderline: true,
-            endAdornment: search.length > 0 && (
-              <InputAdornment position="end">
-                <IconButton size="small" onClick={handleCancel}>
-                  <Close style={{ height: 18, width: 18 }} />
+              </Tooltip>
+
+              <Tooltip
+                title="New Group"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      fontSize: "12px",
+                    },
+                  },
+                }}
+              >
+                <IconButton size="small">
+                  <GroupAddOutlined />
                 </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          value={search}
-          onChange={handleSearch}
-        />
-      </Box>
+              </Tooltip>
+
+              <Tooltip
+                title="Menu"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      fontSize: "12px",
+                    },
+                  },
+                }}
+              >
+                <IconButton
+                  size="small"
+                  onClick={() => setOpenList((prev) => !prev)}
+                >
+                  <MoreVert />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Box>
+        </Header>
+
+        <Popper
+          open={openList}
+          anchorEl={anchorRef.current}
+          transition
+          style={{ zIndex: 1300, transition: "width 2s" }}
+          placement="bottom-end"
+        >
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{
+                transformOrigin:
+                  placement === "bottom" ? "bottom end" : "bottom end",
+              }}
+            >
+              <Paper elevation={0}>
+                <ClickAwayListener onClickAway={handleClickAway}>
+                  <MenuList id="menu-list-grow">
+                    <MenuItem
+                      style={{ fontSize: 12 }}
+                      onClick={handleMyProfile}
+                    >
+                      My profile
+                    </MenuItem>
+                    <MenuItem style={{ fontSize: 12 }}>New Group</MenuItem>
+                    <MenuItem style={{ fontSize: 12 }} onClick={handleLogout}>
+                      Logout
+                    </MenuItem>
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
+        </Popper>
+
+        <Box
+          height={49}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          p="0 15px"
+        >
+          <TextField
+            fullWidth
+            className={classes.input}
+            variant="filled"
+            placeholder="Searh or start new chat"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start" style={{ marginTop: 0 }}>
+                  <IconButton size="small">
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+              disableUnderline: true,
+              endAdornment: search.length > 0 && (
+                <InputAdornment position="end">
+                  <IconButton size="small" onClick={handleCancel}>
+                    <Close style={{ height: 18, width: 18 }} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            value={search}
+            onChange={handleSearch}
+          />
+        </Box>
+      </Loader>
+
+      <Snackebar
+        isShow={loader.open}
+        variant={loader.variant}
+        setOpen={setLoader}
+        message={loader.message}
+      />
     </Box>
   );
 }
