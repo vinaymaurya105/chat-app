@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   LogoutUser,
+  UpdateUser,
   listusers,
   login,
   registerUser,
@@ -9,9 +10,13 @@ import tokenValidator from "../middleware/tokenValidator";
 
 const router = Router();
 
-router.get("/", tokenValidator, listusers);
 router.post("/register", registerUser);
 router.post("/login", login);
-router.post("/logout", tokenValidator, LogoutUser);
+
+router.use("/", tokenValidator);
+
+router.get("/", listusers);
+router.post("/logout", LogoutUser);
+router.patch("/:userId", UpdateUser);
 
 export default router;

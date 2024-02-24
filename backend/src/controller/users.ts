@@ -3,6 +3,7 @@ import { userModel } from "../model/user";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { isValidId } from "../../utils/helper";
 
 export async function registerUser(req: Request, res: Response) {
   const { firstName, lastName, email, password, icon } = req.body;
@@ -111,6 +112,58 @@ export async function listusers(req: Request, res: Response) {
       success: false,
       message: (error as Error).message || error,
     });
+  }
+}
+
+export async function UpdateUser(req: Request, res: Response) {
+  const userId = req.params.userId;
+  const { about, name, icon } = req.body;
+
+  try {
+    isValidId(userId, "userId");
+
+    if (!Object.keys(req.body).length) throw new Error("Body is required");
+
+    if (about && typeof about !== "string")
+      throw new Error("about should be string");
+    if (name && typeof name !== "string")
+      throw new Error("name should be string");
+
+    let firstName;
+    let lastName;
+
+    if (name) {
+      const names = name?.split(" ");
+      firstName = names?.[0];
+      lastName = names.slice(1).join(" ").trim();
+    }
+
+    const user = await userModel.findByIdAndUpdate(
+      userId,
+      {
+        $set: { firstName, lastName, about, icon },
+      },
+      { new: true }
+    );
+
+    if (!user) throw new Error("UserId is not valid");
+
+    const fName = user.firstName ? user.firstName : "";
+    const lName = user.lastName ? user.lastName : "";
+
+    return res.json({
+      succes: true,
+      message: "User updated succesfully",
+      result: {
+        id: user?.id,
+        label: `${fName} ${lName}`.trim(),
+        sublabel: user.email,
+        icon: user.icon,
+        about: user.about,
+      },
+    });
+  } catch (error) {
+    return res.json({ success: false, message: (error as Error).message });
   }
 }
 
