@@ -11,8 +11,17 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useRef, useState } from "react";
+import { UPDATE_USER } from "../utils/constants/api";
+import { getLoginUserRecord } from "../utils/helper";
+import axios from "axios";
 
-type ProfileType = { size?: number; editable?: boolean; icon?: string };
+type ProfileType = {
+  size?: number;
+  editable?: boolean;
+  icon?: string;
+  userId?: string;
+  setLoading?: (v: boolean) => void;
+};
 
 const useStyles = makeStyles(() => ({
   editIconBox: {
@@ -43,7 +52,13 @@ const useStyles = makeStyles(() => ({
 const imgValidation = "image/png,image/gif,image/jpg,image/jpeg";
 
 function Profile(props: ProfileType) {
-  const { size = 40, icon = "", editable = false } = props;
+  const {
+    size = 40,
+    icon = "",
+    editable = false,
+    userId,
+    setLoading = () => {},
+  } = props;
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const anchoreRef = useRef<HTMLAnchorElement | null>(null);
@@ -54,15 +69,41 @@ function Profile(props: ProfileType) {
     setOpen(false);
   };
 
-  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     handleClickAway();
+
     const files = event.target.files || [];
     const file = files[0];
     if (!file) return;
     const fileReader = new FileReader();
     fileReader.onloadend = (e: ProgressEvent<FileReader>) => {
       const result = e.target?.result as string;
+
       setImage(result);
+
+      // const user = getLoginUserRecord();
+      // const config = {
+      //   method: "PATCH",
+      //   url: `${UPDATE_USER}/${user.id}`,
+      //   headers: { authorization: user.token },
+      //   data: { icon: JSON.stringify(result) },
+      // };
+      // setLoading(true);
+      // axios(config)
+      //   .then((res) => {
+      //     const { success, message, result } = res.data;
+      //     if (!success) throw new Error(message);
+
+      //     user.icon = result.icon;
+      //     localStorage.setItem("user", JSON.stringify(user));
+      //     setImage(result);
+
+      //     setLoading(false);
+      //   })
+      //   .catch((err: Error) => {
+      //     setLoading(false);
+      //     console.log(err.message);
+      //   });
     };
     fileReader.readAsDataURL(file);
   };
@@ -112,7 +153,7 @@ function Profile(props: ProfileType) {
                         type="file"
                         hidden
                         accept={imgValidation}
-                        onChange={handleInput}
+                        onChange={handleImageUpload}
                       />
                     </MenuItem>
                     <MenuItem

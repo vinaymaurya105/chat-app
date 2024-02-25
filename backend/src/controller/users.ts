@@ -117,7 +117,7 @@ export async function listusers(req: Request, res: Response) {
 
 export async function UpdateUser(req: Request, res: Response) {
   const userId = req.params.userId;
-  const { about, name, icon } = req.body;
+  const { about, label, icon } = req.body;
 
   try {
     isValidId(userId, "userId");
@@ -126,14 +126,14 @@ export async function UpdateUser(req: Request, res: Response) {
 
     if (about && typeof about !== "string")
       throw new Error("about should be string");
-    if (name && typeof name !== "string")
+    if (label && typeof label !== "string")
       throw new Error("name should be string");
 
     let firstName;
     let lastName;
 
-    if (name) {
-      const names = name?.split(" ");
+    if (label) {
+      const names = label?.split(" ");
       firstName = names?.[0];
       lastName = names.slice(1).join(" ").trim();
     }
@@ -152,7 +152,7 @@ export async function UpdateUser(req: Request, res: Response) {
     const lName = user.lastName ? user.lastName : "";
 
     return res.json({
-      succes: true,
+      success: true,
       message: "User updated succesfully",
       result: {
         id: user?.id,

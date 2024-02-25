@@ -11,6 +11,9 @@ import Profile from "./Profile";
 import { ChangeEvent, useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
 import { getLoginUserRecord } from "../utils/helper";
+import Loader from "./Loader";
+import { UPDATE_USER } from "../utils/constants/api";
+import axios from "axios";
 
 const useStyles: any = makeStyles(() => ({
   wrapper: {
@@ -37,7 +40,14 @@ const useStyles: any = makeStyles(() => ({
     boxSizing: "border-box",
   },
 }));
-type userType = { id: string; label: string; about: string; subLabel?: string };
+type userType = {
+  id?: string;
+  label: string;
+  about: string;
+  subLabel?: string;
+  icon: string;
+  token: string;
+};
 
 function InputField(props: any) {
   const {
@@ -95,17 +105,14 @@ function InputField(props: any) {
   );
 }
 
-const defUser = { name: "", about: "" };
+const defUser = { label: "", about: "", icon: "", token: "" };
 function MyProfile(props: any) {
   const { open, handleProfie } = props;
   const classes = useStyles();
 
-  const [isEdit, setIsEdit] = useState(defUser);
-  const [values, setValues] = useState<userType>({
-    id: "",
-    label: "",
-    about: "",
-  });
+  const [isEdit, setIsEdit] = useState({ label: false, about: false });
+  const [values, setValues] = useState<userType>(defUser);
+  const [isLoading, setLoading] = useState(false);
 
   const handleField = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     const value = event.target.value;
@@ -116,11 +123,44 @@ function MyProfile(props: any) {
     setIsEdit((prev) => ({ ...prev, [label]: true }));
   };
 
-  const handleSave = (prop: string) => {
-    if (prop === "name") {
+  const updateUserApi = (type: "label" | "about") => {
+    // const user = getLoginUserRecord();
+    const config = {
+      method: "PATCH",
+      url: `${UPDATE_USER}/${values.id}`,
+      headers: { authorization: `Bearer ${values.token}` },
+      data: { [type]: values[type] },
+    };
+    setLoading(true);
+    axios(config)
+      .then((res: any) => {
+        const { success, message, result } = res.data;
+        if (!success) throw new Error(message);
+
+        values[type] = result[type];
+        localStorage.setItem("user", JSON.stringify(values));
+
+        setLoading(false);
+        setIsEdit((prev) => ({ ...prev, [type]: false }));
+      })
+      .catch((err: Error) => {
+        setLoading(false);
+      });
+  };
+
+  const handleSave = (prop: "label" | "about") => {
+    const user = getLoginUserRecord();
+    if (user[prop] === values[prop]) {
+      setIsEdit((prev) => ({ ...prev, [prop]: false }));
+      return;
+    }
+    if (prop === "label") {
+      updateUserApi("label");
+
       return;
     }
     if (prop === "about") {
+      updateUserApi("about");
     }
   };
 
@@ -131,68 +171,75 @@ function MyProfile(props: any) {
 
   return (
     <Drawer open={open} hideBackdrop elevation={0}>
-      <Box bgcolor="#F0F2F5" height="100%" width={380} boxSizing="border-box">
-        <Box display="flex" bgcolor="#008069" color="#fff" p="10px">
-          <IconButton
-            style={{ height: 30, width: 24, color: "#fff" }}
-            onClick={handleProfie}
-          >
-            <West />
-          </IconButton>
+      <Loader loading={isLoading}>
+        <Box bgcolor="#F0F2F5" height="100%" width={380} boxSizing="border-box">
+          <Box display="flex" bgcolor="#008069" color="#fff" p="10px">
+            <IconButton
+              style={{ height: 30, width: 24, color: "#fff" }}
+              onClick={handleProfie}
+            >
+              <West />
+            </IconButton>
 
-          <Box className={classes.wrapper}>
-            <Typography variant="h6">My Profile</Typography>
+            <Box className={classes.wrapper}>
+              <Typography variant="h6">My Profile</Typography>
+            </Box>
           </Box>
-        </Box>
 
-        <Box className={classes.profile}>
-          <Profile size={200} editable />
-        </Box>
+          <Box className={classes.profile}>
+            <Profile
+              size={200}
+              icon={values?.icon}
+              userId={values.id}
+              editable
+            />
+          </Box>
 
-        <Box className={classes.container}>
-          <Typography variant="body2" color="#008069">
-            Your name
-          </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            gap={1}
-          >
+          <Box className={classes.container}>
+            <Typography variant="body2" color="#008069">
+              Your name
+            </Typography>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              gap={1}
+            >
+              <InputField
+                value={values?.label}
+                limit
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  handleField(e, "label")
+                }
+                handleEdit={() => handleEdit("label")}
+                editable={isEdit.label}
+                onSave={() => handleSave("label")}
+              />
+            </Box>
+          </Box>
+
+          <Box p="20px 20px 28px 30px" boxSizing="border-box" width="380px">
+            <Typography variant="body2">
+              This is not your username or pin. this will be visible to your
+              chat contacts
+            </Typography>
+          </Box>
+          <Box className={classes.container}>
+            <Typography variant="body2" color="#008069">
+              About
+            </Typography>
             <InputField
-              value={values?.label}
-              limit
+              value={values?.about}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                handleField(e, "label")
+                handleField(e, "about")
               }
-              handleEdit={() => handleEdit("name")}
-              editable={isEdit.name}
-              onSave={() => handleSave("name")}
+              handleEdit={() => handleEdit("about")}
+              editable={isEdit.about}
+              onSave={() => handleSave("about")}
             />
           </Box>
         </Box>
-
-        <Box p="20px 20px 28px 30px" boxSizing="border-box" width="380px">
-          <Typography variant="body2">
-            This is not your username or pin. this will be visible to your chat
-            contacts
-          </Typography>
-        </Box>
-        <Box className={classes.container}>
-          <Typography variant="body2" color="#008069">
-            About
-          </Typography>
-          <InputField
-            value={values?.about}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              handleField(e, "about")
-            }
-            handleEdit={() => handleEdit("about")}
-            editable={isEdit.about}
-            onSave={() => handleSave("about")}
-          />
-        </Box>
-      </Box>
+      </Loader>
     </Drawer>
   );
 }
