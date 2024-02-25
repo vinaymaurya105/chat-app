@@ -12,7 +12,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import { ChangeEvent, useRef, useState } from "react";
 import { UPDATE_USER } from "../utils/constants/api";
-import { getLoginUserRecord } from "../utils/helper";
+import { getLoginUserRecord } from "../utils/Helper";
 import axios from "axios";
 
 type ProfileType = {

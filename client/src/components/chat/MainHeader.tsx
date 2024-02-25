@@ -29,7 +29,7 @@ import Profile from "../Profile";
 import axios from "axios";
 import { LOGOUT_USER } from "../../utils/constants/api";
 import { useNavigate } from "react-router-dom";
-import { getLoginUserRecord } from "../../utils/helper";
+import { getLoginUserRecord } from "../../utils/Helper";
 import Snackebar from "../Snackebar";
 import Loader from "../Loader";
 

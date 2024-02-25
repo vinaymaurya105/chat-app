@@ -83,6 +83,10 @@ function Login() {
       });
   };
 
+  useEffect(() => {
+    console.log("login");
+    return () => console.log("unmount");
+  }, []);
   return (
     <>
       <HomePageLayout label="Login" loading={loading}>

@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={Signup} />
-          <Route path="/chat" Component={userListing} />
+          <Route path="/chat" Component={Chat} />
 
           <Route path="*" element={<Navigate to="/login" replace={true} />} />
         </Routes>

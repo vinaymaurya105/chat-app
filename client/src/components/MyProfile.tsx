@@ -10,7 +10,7 @@ import {
 import Profile from "./Profile";
 import { ChangeEvent, useEffect, useState } from "react";
 import { makeStyles } from "@mui/styles";
-import { getLoginUserRecord } from "../utils/helper";
+import { getLoginUserRecord } from "../utils/Helper";
 import Loader from "./Loader";
 import { UPDATE_USER } from "../utils/constants/api";
 import axios from "axios";
