@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getSender } from "../../utils/Helper";
 
 import Profile from "../Profile";
+import NewChat from "./NewChat";
 
 const useStyle = makeStyles(() => ({
   container: {
@@ -30,9 +31,17 @@ function UserListing(props: any) {
   const classes = useStyle();
   const [openProfile, setOpenProfile] = useState(false);
   const [values, setValues] = useState([]);
+  const [newChat, setNewChat] = useState(false);
 
   const handleProfie = () => {
     setOpenProfile((prev) => !prev);
+  };
+
+  console.log({ newChat });
+
+  const handleNewChat = () => {
+    console.log("hell");
+    setNewChat((prev) => !prev);
   };
 
   useEffect(() => {
@@ -71,6 +80,7 @@ function UserListing(props: any) {
       {openProfile && (
         <MyProfile open={openProfile} handleProfie={handleProfie} />
       )}
+      {newChat && <NewChat open={open} handleNewChat={handleNewChat} />}
     </Box>
   );
 }

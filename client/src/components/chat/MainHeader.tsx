@@ -21,9 +21,9 @@ import {
   Add,
   More,
   MoreVert,
-  Notifications,
   NotificationsNone,
   GroupAddOutlined,
+  PersonAddAlt,
 } from "@mui/icons-material";
 import Profile from "../Profile";
 import axios from "axios";
@@ -62,7 +62,7 @@ const useStyle = makeStyles(() => ({
 }));
 
 function MainHeader(props: any) {
-  const { handleProfie } = props;
+  const { handleProfie, handleNewChat } = props;
   const classes = useStyle();
 
   const [search, setSearch] = useState("");
@@ -138,6 +138,21 @@ function MainHeader(props: any) {
               gap={1}
               ref={anchorRef}
             >
+              <Tooltip
+                title="New chat"
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      fontSize: "12px",
+                    },
+                  },
+                }}
+              >
+                <IconButton size="small" onClick={handleNewChat}>
+                  <PersonAddAlt />
+                </IconButton>
+              </Tooltip>
+
               <Tooltip
                 title="Notifications"
                 componentsProps={{
