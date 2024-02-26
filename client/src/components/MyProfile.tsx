@@ -14,6 +14,7 @@ import { getLoginUserRecord } from "../utils/Helper";
 import Loader from "./Loader";
 import { UPDATE_USER } from "../utils/constants/api";
 import axios from "axios";
+import Snackebar from "./Snackebar";
 
 const useStyles: any = makeStyles(() => ({
   wrapper: {
@@ -113,6 +114,11 @@ function MyProfile(props: any) {
   const [isEdit, setIsEdit] = useState({ label: false, about: false });
   const [values, setValues] = useState<userType>(defUser);
   const [isLoading, setLoading] = useState(false);
+  const [loader, setLoader] = useState({
+    open: false,
+    variant: "error",
+    message: "",
+  });
 
   const handleField = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     const value = event.target.value;
@@ -124,7 +130,6 @@ function MyProfile(props: any) {
   };
 
   const updateUserApi = (type: "label" | "about") => {
-    // const user = getLoginUserRecord();
     const config = {
       method: "PATCH",
       url: `${UPDATE_USER}/${values.id}`,
@@ -142,9 +147,11 @@ function MyProfile(props: any) {
 
         setLoading(false);
         setIsEdit((prev) => ({ ...prev, [type]: false }));
+        setLoader({ variant: "success", open: true, message });
       })
       .catch((err: Error) => {
         setLoading(false);
+        setLoader({ variant: "error", open: true, message: err.message });
       });
   };
 
@@ -240,6 +247,14 @@ function MyProfile(props: any) {
           </Box>
         </Box>
       </Loader>
+      {loader.open && (
+        <Snackebar
+          isShow={loader.open}
+          variant={loader.variant}
+          message={loader.message}
+          setOpen={setLoader}
+        />
+      )}
     </Drawer>
   );
 }
