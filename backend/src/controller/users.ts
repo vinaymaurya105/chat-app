@@ -4,6 +4,9 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { isValidId } from "../../utils/helper";
+import mongoose from "mongoose";
+
+const ObjectId = mongoose.Types.ObjectId;
 
 export async function registerUser(req: Request, res: Response) {
   const { firstName, lastName, email, password, icon } = req.body;
@@ -86,22 +89,37 @@ export async function login(req: Request, res: Response) {
 
 export async function listusers(req: Request, res: Response) {
   const search = req.query.search as string;
-  const userId = req.headers["x-user-id"];
+  const userId = req.headers["x-user-id"] as string;
   try {
-    const searchquery = search
-      ? {
+    const users = await userModel.aggregate([
+      { $match: { _id: { $ne: new ObjectId(userId) } } },
+      {
+        $project: {
+          id: "$_id",
+          label: {
+            $trim: {
+              input: {
+                $concat: [
+                  { $ifNull: ["$firstName", ""] },
+                  { $ifNull: ["$lastName", ""] },
+                ],
+              },
+            },
+          },
+          subLabel: "$email",
+          about: true,
+          _id: false,
+        },
+      },
+      {
+        $match: {
           $or: [
             { label: RegExp(search || "", "i") },
             { email: RegExp(search || "", "i") },
           ],
-        }
-      : {};
-
-    const users = await userModel.find(
-      { _id: { $ne: userId }, ...searchquery },
-      { password: false }
-    );
-
+        },
+      },
+    ]);
     return res.json({
       success: true,
       message: "Request successful",
