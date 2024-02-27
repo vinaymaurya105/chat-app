@@ -108,7 +108,7 @@ function InputField(props: any) {
 
 const defUser = { label: "", about: "", icon: "", token: "" };
 function MyProfile(props: any) {
-  const { open, handleProfie } = props;
+  const { open, handleProfile } = props;
   const classes = useStyles();
 
   const [isEdit, setIsEdit] = useState({ label: false, about: false });
@@ -183,7 +183,7 @@ function MyProfile(props: any) {
           <Box display="flex" bgcolor="#008069" color="#fff" p="10px">
             <IconButton
               style={{ height: 30, width: 24, color: "#fff" }}
-              onClick={handleProfie}
+              onClick={handleProfile}
             >
               <West />
             </IconButton>

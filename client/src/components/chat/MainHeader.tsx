@@ -62,7 +62,7 @@ const useStyle = makeStyles(() => ({
 }));
 
 function MainHeader(props: any) {
-  const { handleProfie, handleNewChat } = props;
+  const { handleProfile, handleNewChat } = props;
   const classes = useStyle();
 
   const [search, setSearch] = useState("");
@@ -91,7 +91,7 @@ function MainHeader(props: any) {
 
   const handleMyProfile = () => {
     handleClickAway();
-    handleProfie();
+    handleProfile();
   };
 
   const handleLogout = () => {

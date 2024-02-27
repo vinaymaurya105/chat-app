@@ -5,3 +5,4 @@ export const SIGNUP = `${BASE_URL}/user/register`;
 export const LOGOUT_USER = `${BASE_URL}/user/logout`;
 export const UPDATE_USER = `${BASE_URL}/user`;
 export const FETCH_CHAT_USERS = `${BASE_URL}/chat`;
+export const LIST_USERS = `${BASE_URL}/user`;

@@ -33,7 +33,7 @@ function UserListing(props: any) {
   const [values, setValues] = useState([]);
   const [newChat, setNewChat] = useState(false);
 
-  const handleProfie = () => {
+  const handleProfile = () => {
     setOpenProfile((prev) => !prev);
   };
 
@@ -51,7 +51,7 @@ function UserListing(props: any) {
 
   return (
     <Box bgcolor="#fff" width={380} height="100%">
-      <MainHeader handleProfie={handleProfie} />
+      <MainHeader handleProfile={handleProfile} handleNewChat={handleNewChat} />
       <Box borderTop="1px solid #e9ecef" overflow="auto">
         {values.map((user) => {
           const { id, chatName, isGroupChat, users, icon } = user;
@@ -78,7 +78,7 @@ function UserListing(props: any) {
       </Box>
 
       {openProfile && (
-        <MyProfile open={openProfile} handleProfie={handleProfie} />
+        <MyProfile open={openProfile} handleProfile={handleProfile} />
       )}
       {newChat && <NewChat open={open} handleNewChat={handleNewChat} />}
     </Box>
