@@ -1,10 +1,12 @@
-import { West } from "@mui/icons-material";
+import { Search, West } from "@mui/icons-material";
 import { Box, Drawer, IconButton, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { LIST_USERS } from "../../utils/constants/api";
 import { getReqHeaders } from "../../utils/Helper";
 import axios from "axios";
+import SearchInput from "../SearchInput";
+import Loader from "../Loader";
 
 const useStyles = makeStyles(() => ({
   wrapper: {
@@ -22,6 +24,7 @@ function NewChat(props: any) {
   const classes = useStyles();
 
   const [values, setValues] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const config = {
@@ -29,20 +32,23 @@ function NewChat(props: any) {
       url: LIST_USERS,
       headers: getReqHeaders(),
     };
+    setLoading(true);
     axios(config)
       .then((res) => {
         const { success, result, message } = res.data;
         if (!success) throw Error(message);
-        console.log(result);
+        setValues(result);
+        setLoading(false);
       })
       .catch((err: Error) => {
+        setLoading(false);
         console.log(err.message);
       });
   }, []);
 
   return (
-    <Box>
-      <Drawer open={open} hideBackdrop elevation={0}>
+    <Drawer open={open} hideBackdrop elevation={0}>
+      <Loader loading={loading}>
         <Box bgcolor="#F0F2F5" height="100%" width={380} boxSizing="border-box">
           <Box display="flex" bgcolor="#008069" color="#fff" p="10px">
             <IconButton
@@ -56,9 +62,21 @@ function NewChat(props: any) {
               <Typography variant="h6">New Chat</Typography>
             </Box>
           </Box>
+
+          <SearchInput />
+          <Box>
+            {values.map((value) => {
+              const { id, label, subLabel } = value;
+              return (
+                <Box>
+                  <Typography variant="body2">{label}</Typography>
+                </Box>
+              );
+            })}
+          </Box>
         </Box>
-      </Drawer>
-    </Box>
+      </Loader>
+    </Drawer>
   );
 }
 

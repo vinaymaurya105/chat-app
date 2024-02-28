@@ -32,19 +32,20 @@ import { useNavigate } from "react-router-dom";
 import { getLoginUserRecord } from "../../utils/Helper";
 import Snackebar from "../Snackebar";
 import Loader from "../Loader";
+import SearchInput from "../SearchInput";
 
 const useStyle = makeStyles(() => ({
-  input: {
-    "& .MuiFilledInput-root": {
-      padding: "5px 15px",
-      height: "35px",
-      borderRadius: 8,
-    },
-    "& .MuiFilledInput-input": {
-      padding: 0,
-      fontSize: 14,
-    },
-  },
+  // input: {
+  //   "& .MuiFilledInput-root": {
+  //     padding: "5px 15px",
+  //     height: "35px",
+  //     borderRadius: 8,
+  //   },
+  //   "& .MuiFilledInput-input": {
+  //     padding: 0,
+  //     fontSize: 14,
+  //   },
+  // },
   button: {
     height: 30,
     "&.MuiButton-root": {
@@ -65,7 +66,7 @@ function MainHeader(props: any) {
   const { handleProfile, handleNewChat } = props;
   const classes = useStyle();
 
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
   const [openList, setOpenList] = useState(false);
   const anchorRef = useRef(null);
   const navigate = useNavigate();
@@ -76,14 +77,14 @@ function MainHeader(props: any) {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearch(value);
-  };
+  // const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value;
+  //   setSearch(value);
+  // };
 
-  const handleCancel = () => {
-    setSearch("");
-  };
+  // const handleCancel = () => {
+  //   setSearch("");
+  // };
 
   const handleClickAway = () => {
     setOpenList(false);
@@ -241,39 +242,7 @@ function MainHeader(props: any) {
           )}
         </Popper>
 
-        <Box
-          height={49}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          p="0 15px"
-        >
-          <TextField
-            fullWidth
-            className={classes.input}
-            variant="filled"
-            placeholder="Searh or start new chat"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start" style={{ marginTop: 0 }}>
-                  <IconButton size="small">
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
-              disableUnderline: true,
-              endAdornment: search.length > 0 && (
-                <InputAdornment position="end">
-                  <IconButton size="small" onClick={handleCancel}>
-                    <Close style={{ height: 18, width: 18 }} />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            value={search}
-            onChange={handleSearch}
-          />
-        </Box>
+        <SearchInput onChange={(a: string) => console.log(a)} />
       </Loader>
 
       <Snackebar
