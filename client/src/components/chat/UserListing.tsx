@@ -69,7 +69,7 @@ function UserListing(props: any) {
                   <Typography>{sender?.label}</Typography>
                 )}
                 <Typography variant="caption" noWrap color="GrayText">
-                  Hello
+                  Hey there! I am using ChatMingle
                 </Typography>
               </Box>
             </Box>
