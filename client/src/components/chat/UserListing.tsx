@@ -80,7 +80,7 @@ function UserListing(props: any) {
       {openProfile && (
         <MyProfile open={openProfile} handleProfile={handleProfile} />
       )}
-      {newChat && <NewChat open={open} handleNewChat={handleNewChat} />}
+      {newChat && <NewChat open={newChat} handleNewChat={handleNewChat} />}
     </Box>
   );
 }

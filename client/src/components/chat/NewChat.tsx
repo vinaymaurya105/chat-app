@@ -1,5 +1,5 @@
 import { Search, West } from "@mui/icons-material";
-import { Box, Drawer, IconButton, Typography } from "@mui/material";
+import { Box, Drawer, IconButton, Slide, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { LIST_USERS } from "../../utils/constants/api";
@@ -54,12 +54,17 @@ function NewChat(props: any) {
       })
       .catch((err: Error) => {
         setLoading(false);
-        console.log(err.message);
       });
   }, []);
 
   return (
-    <Drawer open={open} hideBackdrop elevation={0}>
+    <Drawer
+      open={open}
+      anchor="left"
+      elevation={0}
+      hideBackdrop
+      style={{ transition: "width 2s" }}
+    >
       <Loader loading={loading}>
         <Box bgcolor="#fff" height="100%" width={380} boxSizing="border-box">
           <Box display="flex" bgcolor="#008069" color="#fff" p="10px">
@@ -82,10 +87,13 @@ function NewChat(props: any) {
             overflow="auto"
             borderTop="1px solid #e9ecef"
           >
+            <Box display="flex">
+              {/* < */}
+            </Box>
             {values.map((value) => {
-              const { id, label, subLabel, about } = value;
+              const { id, label, about } = value;
               return (
-                <Box className={classes.container}>
+                <Box key={id} className={classes.container}>
                   <Profile size={45} />
                   <Box
                     display="flex"
