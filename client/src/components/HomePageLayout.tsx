@@ -44,7 +44,7 @@ function HomePageLayout(props: HomePageType) {
           alignItems="center"
         >
           <Typography variant="h5" color="grey">
-            Talk-A-Tive
+            Chat Mingle
           </Typography>
         </Box>
         <Box p={2} gap={1.5} className={classes.wrapper}>

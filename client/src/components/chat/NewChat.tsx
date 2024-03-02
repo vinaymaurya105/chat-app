@@ -87,9 +87,6 @@ function NewChat(props: any) {
             overflow="auto"
             borderTop="1px solid #e9ecef"
           >
-            <Box display="flex">
-              {/* < */}
-            </Box>
             {values.map((value) => {
               const { id, label, about } = value;
               return (

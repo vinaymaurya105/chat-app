@@ -8,7 +8,7 @@ const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   icon: { type: String },
-  about: { type: String, default: "Hi I am using chat app" },
+  about: { type: String, default: "Hey there! I am using ChatMingle" },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
