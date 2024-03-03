@@ -9,6 +9,7 @@ import { getSender } from "../../utils/Helper";
 
 import Profile from "../Profile";
 import NewChat from "./NewChat";
+import UserLabel from "../UserLabel";
 
 const useStyle = makeStyles(() => ({
   container: {
@@ -60,18 +61,8 @@ function UserListing(props: any) {
             sender = getSender(users);
           }
           return (
-            <Box key={id} className={classes.container}>
-              <Profile icon={isGroupChat ? icon : sender?.icon} />
-              <Box display="flex" flexDirection="column">
-                {isGroupChat ? (
-                  <Typography variant="body1">{chatName}</Typography>
-                ) : (
-                  <Typography>{sender?.label}</Typography>
-                )}
-                <Typography variant="caption" noWrap color="GrayText">
-                  Hey there! I am using ChatMingle
-                </Typography>
-              </Box>
+            <Box key={id}>
+              <UserLabel label={isGroupChat ? chatName : sender?.label} />
             </Box>
           );
         })}
