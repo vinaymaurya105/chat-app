@@ -33,19 +33,9 @@ import { getLoginUserRecord } from "../../utils/Helper";
 import Snackebar from "../Snackebar";
 import Loader from "../Loader";
 import SearchInput from "../SearchInput";
+import GroupChat from "./GroupChat";
 
 const useStyle = makeStyles(() => ({
-  // input: {
-  //   "& .MuiFilledInput-root": {
-  //     padding: "5px 15px",
-  //     height: "35px",
-  //     borderRadius: 8,
-  //   },
-  //   "& .MuiFilledInput-input": {
-  //     padding: 0,
-  //     fontSize: 14,
-  //   },
-  // },
   button: {
     height: 30,
     "&.MuiButton-root": {
@@ -63,10 +53,9 @@ const useStyle = makeStyles(() => ({
 }));
 
 function MainHeader(props: any) {
-  const { handleProfile, handleNewChat } = props;
+  const { handleProfile, handleNewChat, handleGroupChat } = props;
   const classes = useStyle();
 
-  // const [search, setSearch] = useState("");
   const [openList, setOpenList] = useState(false);
   const anchorRef = useRef(null);
   const navigate = useNavigate();
@@ -76,15 +65,6 @@ function MainHeader(props: any) {
     message: "",
   });
   const [loading, setLoading] = useState(false);
-
-  // const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   setSearch(value);
-  // };
-
-  // const handleCancel = () => {
-  //   setSearch("");
-  // };
 
   const handleClickAway = () => {
     setOpenList(false);
@@ -181,7 +161,7 @@ function MainHeader(props: any) {
                   },
                 }}
               >
-                <IconButton size="small">
+                <IconButton size="small" onClick={handleGroupChat}>
                   <GroupAddOutlined />
                 </IconButton>
               </Tooltip>
@@ -231,7 +211,12 @@ function MainHeader(props: any) {
                     >
                       My profile
                     </MenuItem>
-                    <MenuItem style={{ fontSize: 12 }}>New Group</MenuItem>
+                    <MenuItem
+                      style={{ fontSize: 12 }}
+                      onClick={handleGroupChat}
+                    >
+                      New Group
+                    </MenuItem>
                     <MenuItem style={{ fontSize: 12 }} onClick={handleLogout}>
                       Logout
                     </MenuItem>

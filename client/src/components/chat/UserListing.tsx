@@ -10,6 +10,7 @@ import { getSender } from "../../utils/Helper";
 import Profile from "../Profile";
 import NewChat from "./NewChat";
 import UserLabel from "../UserLabel";
+import GroupChat from "./GroupChat";
 
 const useStyle = makeStyles(() => ({
   container: {
@@ -33,6 +34,7 @@ function UserListing(props: any) {
   const [openProfile, setOpenProfile] = useState(false);
   const [values, setValues] = useState([]);
   const [newChat, setNewChat] = useState(false);
+  const [groupChat, setGroupChat] = useState(false);
 
   const handleProfile = () => {
     setOpenProfile((prev) => !prev);
@@ -44,6 +46,9 @@ function UserListing(props: any) {
     console.log("hell");
     setNewChat((prev) => !prev);
   };
+  const handleGroupChat = () => {
+    setGroupChat((prev) => !prev);
+  };
 
   useEffect(() => {
     console.log(userValues);
@@ -51,28 +56,35 @@ function UserListing(props: any) {
   }, [userValues]);
 
   return (
-    <Box bgcolor="#fff" width={380} height="100%">
-      <MainHeader handleProfile={handleProfile} handleNewChat={handleNewChat} />
-      <Box borderTop="1px solid #e9ecef" overflow="auto">
-        {values.map((user) => {
-          const { id, chatName, isGroupChat, users, icon } = user;
-          let sender;
-          if (!isGroupChat) {
-            sender = getSender(users);
-          }
-          return (
-            <Box key={id}>
-              <UserLabel label={isGroupChat ? chatName : sender?.label} />
-            </Box>
-          );
-        })}
-      </Box>
+    <>
+      <Box bgcolor="#fff" width={380} height="100%">
+        <MainHeader
+          handleProfile={handleProfile}
+          handleNewChat={handleNewChat}
+          handleGroupChat={handleGroupChat}
+        />
+        <Box borderTop="1px solid #e9ecef" overflow="auto">
+          {values.map((user) => {
+            const { id, chatName, isGroupChat, users, icon } = user;
+            let sender;
+            if (!isGroupChat) {
+              sender = getSender(users);
+            }
+            return (
+              <Box key={id}>
+                <UserLabel label={isGroupChat ? chatName : sender?.label} />
+              </Box>
+            );
+          })}
+        </Box>
 
-      {openProfile && (
-        <MyProfile open={openProfile} handleProfile={handleProfile} />
-      )}
-      {newChat && <NewChat open={newChat} handleNewChat={handleNewChat} />}
-    </Box>
+        {openProfile && (
+          <MyProfile open={openProfile} handleProfile={handleProfile} />
+        )}
+        {newChat && <NewChat open={newChat} handleNewChat={handleNewChat} />}
+      </Box>
+      {groupChat && <GroupChat handleGroupChat={handleGroupChat} />}
+    </>
   );
 }
 
