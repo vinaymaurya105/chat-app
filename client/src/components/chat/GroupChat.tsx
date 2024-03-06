@@ -8,16 +8,17 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LIST_USERS } from "../../utils/constants/api";
 import { Close } from "@mui/icons-material";
 import axios from "axios";
 import Loader from "../Loader";
 import { getReqHeaders } from "../../utils/Helper";
+import UserLabel from "../UserLabel";
+import SearchInput from "../SearchInput";
 
 function GroupChat(props: any) {
   const { handleGroupChat } = props;
-  console.log("hell");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +44,7 @@ function GroupChat(props: any) {
           <Box
             display="flex"
             justifyContent="space-between"
-            p="9px 20px"
+            p="5px 20px"
             height={50}
             boxSizing="border-box"
             alignItems="center"
@@ -58,7 +59,17 @@ function GroupChat(props: any) {
 
           <DialogContent dividers>
             <Box height="100%" flex={1}>
-              Hell
+              <SearchInput />
+              <Box borderTop="1px solid  #e9ecef">
+                {users.map((user) => {
+                  const { id, label, about } = user;
+                  return (
+                    <Box key={id}>
+                      <UserLabel label={label} subLabel={about} />
+                    </Box>
+                  );
+                })}
+              </Box>
             </Box>
           </DialogContent>
           <DialogActions>
