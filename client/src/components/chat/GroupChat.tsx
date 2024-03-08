@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -27,19 +28,45 @@ const useStyles = makeStyles(() => ({
       boxShadow: "none",
     },
   },
+  input: {
+    "& .MuiOutlinedInput-input": {
+      padding: "5px 15px",
+      borderRadius: 8,
+    },
+  },
 }));
+
+type UserType = { id: string; label: string; subLabel: string };
 
 function GroupChat(props: any) {
   const { handleGroupChat } = props;
   const classes = useStyles();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState<UserType[]>([]);
   const [next, setNext] = useState(false);
 
   const handleNext = () => {
     setNext(true);
   };
+
+  const handleUserSelect = (user: UserType) => {
+    setSelected((prev: UserType[]) => {
+      let prevState = [...prev];
+      const selectedUser = prevState.find((u: UserType) => u.id === user.id);
+      if (selectedUser) {
+        console.log("ss");
+        prevState = prevState.filter((u) => u.id !== user.id);
+      } else {
+        prevState.push(user);
+      }
+      return prevState;
+    });
+  };
+  useEffect(() => {
+    console.log({ selected });
+    console.log("hello");
+  }, [selected]);
 
   useEffect(() => {
     const config = { method: "GET", url: LIST_USERS, headers: getReqHeaders() };
@@ -59,13 +86,13 @@ function GroupChat(props: any) {
   return (
     <Dialog open onClose={handleGroupChat} maxWidth="lg">
       <Loader loading={loading}>
-        <Box width={550}>
+        <Box width={600} display="flex" flexDirection="column">
           {!next ? (
             <>
               <Box
                 display="flex"
                 justifyContent="space-between"
-                p="5px 20px"
+                p="5px 10px"
                 height={50}
                 boxSizing="border-box"
                 alignItems="center"
@@ -80,12 +107,16 @@ function GroupChat(props: any) {
 
               <DialogContent dividers>
                 <Box height="100%" flex={1}>
-                  <SearchInput />
+                  {/* <SearchInput /> */}
+                  <Box p={1}>
+                    <TextField fullWidth className={classes.input} />
+                  </Box>
+
                   <Box borderTop="1px solid  #e9ecef">
                     {users.map((user) => {
                       const { id, label, about } = user;
                       return (
-                        <Box key={id}>
+                        <Box key={id} onClick={() => handleUserSelect(user)}>
                           <UserLabel label={label} subLabel={about} />
                         </Box>
                       );
