@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,7 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LIST_USERS } from "../../utils/constants/api";
 import { Close } from "@mui/icons-material";
 import axios from "axios";
@@ -29,10 +30,26 @@ const useStyles = makeStyles(() => ({
     },
   },
   input: {
-    "& .MuiOutlinedInput-input": {
-      padding: "5px 15px",
-      borderRadius: 8,
+    "& .MuiInputBase-root": {
+      display: "flex",
+      flexWrap: "wrap",
+      maxHeight: 100,
+      padding: 4,
+      gap: 4,
+      overflowY: "auto",
+      background: "rgba(0,0,0,0.03)",
+      border: "1px solid #adb5bd",
     },
+
+    "& .MuiOutlinedInput-input": {
+      padding: "5px 8px",
+      borderRadius: 8,
+      height: 30,
+      boxSizing: "border-box",
+    },
+  },
+  noBorder: {
+    border: "none",
   },
 }));
 
@@ -45,6 +62,7 @@ function GroupChat(props: any) {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<UserType[]>([]);
   const [next, setNext] = useState(false);
+  const scrollRef = useRef<any>(null);
 
   const handleNext = () => {
     setNext(true);
@@ -55,17 +73,24 @@ function GroupChat(props: any) {
       let prevState = [...prev];
       const selectedUser = prevState.find((u: UserType) => u.id === user.id);
       if (selectedUser) {
-        console.log("ss");
         prevState = prevState.filter((u) => u.id !== user.id);
       } else {
         prevState.push(user);
       }
+
       return prevState;
     });
   };
+
+  const handleDelete = (idx: string) => {
+    setSelected((prev: UserType[]) => {
+      const prevState = prev.filter(({ id }) => id !== idx);
+      return prevState;
+    });
+  };
+
   useEffect(() => {
-    console.log({ selected });
-    console.log("hello");
+    scrollRef?.current?.scrollIntoView();
   }, [selected]);
 
   useEffect(() => {
@@ -109,7 +134,32 @@ function GroupChat(props: any) {
                 <Box height="100%" flex={1}>
                   {/* <SearchInput /> */}
                   <Box p={1}>
-                    <TextField fullWidth className={classes.input} />
+                    <TextField
+                      // variant="filled"
+
+                      fullWidth
+                      className={classes.input}
+                      InputProps={{
+                        disableUnderline: true,
+                        startAdornment: selected.map((user) => {
+                          const { id, label } = user || {};
+                          return (
+                            <Chip
+                              ref={scrollRef}
+                              key={id}
+                              label={label}
+                              variant="outlined"
+                              // color="success"
+                              style={{ color: "black", borderColor: "green" }}
+                              size="small"
+                              onDelete={() => handleDelete(id)}
+                              deleteIcon={<Close />}
+                            />
+                          );
+                        }),
+                      }}
+                      sx={{ fieldset: { border: "none" } }}
+                    />
                   </Box>
 
                   <Box borderTop="1px solid  #e9ecef">
