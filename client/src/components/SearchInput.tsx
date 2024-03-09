@@ -34,13 +34,7 @@ function SearchInput(props: SearchInputType) {
     setSearch("");
   };
   return (
-    <Box
-      height={49}
-      display="flex"
-      alignItems="center"
-      // justifyContent="center"
-      p="5px 15px"
-    >
+    <Box height={49} display="flex" alignItems="center" p="5px 15px">
       <TextField
         fullWidth
         className={classes.input}
@@ -49,9 +43,7 @@ function SearchInput(props: SearchInputType) {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start" style={{ marginTop: 0 }}>
-              {/* <IconButton size="small"> */}
               <Search />
-              {/* </IconButton> */}
             </InputAdornment>
           ),
           disableUnderline: true,
