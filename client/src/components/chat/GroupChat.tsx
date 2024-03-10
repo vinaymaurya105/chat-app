@@ -63,6 +63,7 @@ function GroupChat(props: any) {
   const [selected, setSelected] = useState<UserType[]>([]);
   const [next, setNext] = useState(false);
   const scrollRef = useRef<any>(null);
+  const [search, setSearch] = useState("");
 
   const handleNext = () => {
     setNext(true);
@@ -87,6 +88,21 @@ function GroupChat(props: any) {
       const prevState = prev.filter(({ id }) => id !== idx);
       return prevState;
     });
+  };
+
+  const handleKeyPress = (e: any) => {
+    if (e.key === "Backspace" && !search.length) {
+      setSelected((prev: UserType[]) => {
+        const prevState = [...prev];
+        prevState.pop();
+        return prevState;
+      });
+    }
+  };
+
+  const handleInputChange = (e: any) => {
+    const value = e.target.value;
+    setSearch(value);
   };
 
   useEffect(() => {
@@ -135,10 +151,8 @@ function GroupChat(props: any) {
                   {/* <SearchInput /> */}
                   <Box p={1}>
                     <TextField
-                      // variant="filled"
-
-                      fullWidth
                       className={classes.input}
+                      fullWidth
                       InputProps={{
                         disableUnderline: true,
                         startAdornment: selected.map((user) => {
@@ -159,6 +173,9 @@ function GroupChat(props: any) {
                         }),
                       }}
                       sx={{ fieldset: { border: "none" } }}
+                      onKeyUp={handleKeyPress}
+                      onChange={handleInputChange}
+                      value={search}
                     />
                   </Box>
 

@@ -7,7 +7,6 @@ import MyProfile from "../MyProfile";
 import { useEffect, useState } from "react";
 import { getSender } from "../../utils/Helper";
 
-import Profile from "../Profile";
 import NewChat from "./NewChat";
 import UserLabel from "../UserLabel";
 import GroupChat from "./GroupChat";
@@ -40,10 +39,7 @@ function UserListing(props: any) {
     setOpenProfile((prev) => !prev);
   };
 
-  console.log({ newChat });
-
   const handleNewChat = () => {
-    console.log("hell");
     setNewChat((prev) => !prev);
   };
   const handleGroupChat = () => {
@@ -51,7 +47,6 @@ function UserListing(props: any) {
   };
 
   useEffect(() => {
-    console.log(userValues);
     setValues(userValues);
   }, [userValues]);
 
