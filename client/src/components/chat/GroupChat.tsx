@@ -91,12 +91,11 @@ function GroupChat(props: any) {
   };
 
   const handleKeyPress = (e: any) => {
-    if (e.key === "Backspace" && !search.length) {
-      setSelected((prev: UserType[]) => {
-        const prevState = [...prev];
-        prevState.pop();
-        return prevState;
-      });
+    const data = [...selected];
+    e.stopPropagation();
+    if (data.length && e.key === "Backspace" && !search.length) {
+      data.pop();
+      setSelected(data);
     }
   };
 
@@ -128,73 +127,71 @@ function GroupChat(props: any) {
     <Dialog open onClose={handleGroupChat} maxWidth="lg">
       <Loader loading={loading}>
         <Box width={600} display="flex" flexDirection="column">
-          {!next ? (
-            <>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                p="5px 10px"
-                height={50}
-                boxSizing="border-box"
-                alignItems="center"
-              >
-                <DialogTitle style={{ padding: 0 }}>
-                  <Typography variant="h6">Add group members</Typography>
-                </DialogTitle>
-                <IconButton onClick={handleGroupChat}>
-                  <Close />
-                </IconButton>
-              </Box>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            p="5px 10px"
+            height={50}
+            boxSizing="border-box"
+            alignItems="center"
+          >
+            <DialogTitle style={{ padding: 0 }}>
+              <Typography variant="h6">Add group members</Typography>
+            </DialogTitle>
+            <IconButton onClick={handleGroupChat}>
+              <Close />
+            </IconButton>
+          </Box>
 
-              <DialogContent dividers>
-                <Box height="100%" flex={1}>
-                  {/* <SearchInput /> */}
-                  <Box p={1}>
-                    <TextField
-                      className={classes.input}
-                      fullWidth
-                      InputProps={{
-                        disableUnderline: true,
-                        startAdornment: selected.map((user) => {
-                          const { id, label } = user || {};
-                          return (
-                            <Chip
-                              ref={scrollRef}
-                              key={id}
-                              label={label}
-                              variant="outlined"
-                              // color="success"
-                              style={{ color: "black", borderColor: "green" }}
-                              size="small"
-                              onDelete={() => handleDelete(id)}
-                              deleteIcon={<Close />}
-                            />
-                          );
-                        }),
-                      }}
-                      sx={{ fieldset: { border: "none" } }}
-                      onKeyUp={handleKeyPress}
-                      onChange={handleInputChange}
-                      value={search}
-                    />
-                  </Box>
-
-                  <Box borderTop="1px solid  #e9ecef">
-                    {users.map((user) => {
-                      const { id, label, about } = user;
-                      return (
-                        <Box key={id} onClick={() => handleUserSelect(user)}>
-                          <UserLabel label={label} subLabel={about} />
-                        </Box>
-                      );
-                    })}
-                  </Box>
+          <DialogContent dividers>
+            {!next ? (
+              <Box height="100%" flex={1}>
+                {/* <SearchInput /> */}
+                <Box p={1}>
+                  <TextField
+                    className={classes.input}
+                    fullWidth
+                    InputProps={{
+                      disableUnderline: true,
+                      startAdornment: selected.map((user) => {
+                        const { id, label } = user || {};
+                        return (
+                          <Chip
+                            ref={scrollRef}
+                            key={id}
+                            label={label}
+                            variant="outlined"
+                            // color="success"
+                            style={{ color: "black", borderColor: "green" }}
+                            size="small"
+                            onDelete={() => handleDelete(id)}
+                            deleteIcon={<Close />}
+                          />
+                        );
+                      }),
+                    }}
+                    sx={{ fieldset: { border: "none" } }}
+                    onKeyDown={handleKeyPress}
+                    onChange={handleInputChange}
+                    value={search}
+                  />
                 </Box>
-              </DialogContent>
-            </>
-          ) : (
-            <></>
-          )}
+
+                <Box borderTop="1px solid  #e9ecef">
+                  {users.map((user) => {
+                    const { id, label, about } = user;
+                    return (
+                      <Box key={id} onClick={() => handleUserSelect(user)}>
+                        <UserLabel label={label} subLabel={about} />
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+            ) : (
+              <></>
+            )}
+          </DialogContent>
           <DialogActions>
             <Button
               variant="contained"
