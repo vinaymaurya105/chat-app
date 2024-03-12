@@ -19,6 +19,7 @@ import { getReqHeaders } from "../../utils/Helper";
 import UserLabel from "../UserLabel";
 import SearchInput from "../SearchInput";
 import { makeStyles } from "@mui/styles";
+import Profile from "../Profile";
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -48,12 +49,20 @@ const useStyles = makeStyles(() => ({
       boxSizing: "border-box",
     },
   },
-  noBorder: {
-    border: "none",
+  chip: {
+    "&.MuiChip-root": {
+      color: "black",
+      borderColor: "green",
+      padding: "2px",
+    },
+
+    "& .MuiChip-label": {
+      padding: "0 4px",
+    },
   },
 }));
 
-type UserType = { id: string; label: string; subLabel: string };
+type UserType = { id: string; label: string; subLabel: string; icon: string };
 
 function GroupChat(props: any) {
   const { handleGroupChat } = props;
@@ -146,7 +155,6 @@ function GroupChat(props: any) {
           <DialogContent dividers>
             {!next ? (
               <Box height="100%" flex={1}>
-                {/* <SearchInput /> */}
                 <Box p={1}>
                   <TextField
                     className={classes.input}
@@ -154,18 +162,23 @@ function GroupChat(props: any) {
                     InputProps={{
                       disableUnderline: true,
                       startAdornment: selected.map((user) => {
-                        const { id, label } = user || {};
+                        const { id, label, icon } = user || {};
                         return (
                           <Chip
                             ref={scrollRef}
+                            className={classes.chip}
                             key={id}
                             label={label}
                             variant="outlined"
-                            // color="success"
-                            style={{ color: "black", borderColor: "green" }}
+                            // style={{
+                            //   color: "black",
+                            //   borderColor: "green",
+                            //   padding: "2px",
+                            // }}
                             size="small"
                             onDelete={() => handleDelete(id)}
                             deleteIcon={<Close />}
+                            avatar={<Profile icon={icon} size={19} />}
                           />
                         );
                       }),
