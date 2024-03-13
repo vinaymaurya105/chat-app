@@ -75,7 +75,7 @@ function GroupChat(props: any) {
   const [search, setSearch] = useState("");
 
   const handleNext = () => {
-    setNext(true);
+    setNext((prev) => !prev);
   };
 
   const handleUserSelect = (user: UserType) => {
@@ -170,11 +170,6 @@ function GroupChat(props: any) {
                             key={id}
                             label={label}
                             variant="outlined"
-                            // style={{
-                            //   color: "black",
-                            //   borderColor: "green",
-                            //   padding: "2px",
-                            // }}
                             size="small"
                             onDelete={() => handleDelete(id)}
                             deleteIcon={<Close />}
@@ -202,7 +197,9 @@ function GroupChat(props: any) {
                 </Box>
               </Box>
             ) : (
-              <></>
+              <Box>
+                <Profile />
+              </Box>
             )}
           </DialogContent>
           <DialogActions>
@@ -210,9 +207,17 @@ function GroupChat(props: any) {
               variant="contained"
               className={classes.button}
               disableFocusRipple
-              onClick={handleNext}
+              onClick={!next ? handleGroupChat : handleNext}
             >
-              Next
+              {!next ? "Cancel" : "Back"}
+            </Button>
+            <Button
+              variant="contained"
+              className={classes.button}
+              disableFocusRipple
+              onClick={!next ? handleNext : () => console.log("Save")}
+            >
+              {!next ? "Next" : "Save"}
             </Button>
           </DialogActions>
         </Box>
