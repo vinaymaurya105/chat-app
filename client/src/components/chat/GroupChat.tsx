@@ -73,6 +73,7 @@ function GroupChat(props: any) {
   const [next, setNext] = useState(false);
   const scrollRef = useRef<any>(null);
   const [search, setSearch] = useState("");
+  const [groupame, setGroupName] = useState("");
 
   const handleNext = () => {
     setNext((prev) => !prev);
@@ -198,7 +199,15 @@ function GroupChat(props: any) {
               </Box>
             ) : (
               <Box>
-                <Profile />
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  p="28px 0"
+                >
+                  <Profile size={200} editable />
+                </Box>
+                <TextField fullWidth variant="standard" />
               </Box>
             )}
           </DialogContent>
