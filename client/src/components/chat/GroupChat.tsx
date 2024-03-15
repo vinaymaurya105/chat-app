@@ -10,7 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { LIST_USERS } from "../../utils/constants/api";
 import { Close } from "@mui/icons-material";
 import axios from "axios";
@@ -64,7 +64,10 @@ const useStyles = makeStyles(() => ({
 
 type UserType = { id: string; label: string; subLabel: string; icon: string };
 
-function GroupChat(props: any) {
+type GroupChatType = {
+  handleGroupChat: () => void;
+};
+function GroupChat(props: GroupChatType) {
   const { handleGroupChat } = props;
   const classes = useStyles();
   const [users, setUsers] = useState([]);
@@ -100,7 +103,7 @@ function GroupChat(props: any) {
     });
   };
 
-  const handleKeyPress = (e: any) => {
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     const data = [...selected];
     e.stopPropagation();
     if (data.length && e.key === "Backspace" && !search.length) {
@@ -109,7 +112,7 @@ function GroupChat(props: any) {
     }
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
   };

@@ -16,7 +16,7 @@ import { UPDATE_USER } from "../utils/constants/api";
 import axios from "axios";
 import Snackebar from "./Snackebar";
 
-const useStyles: any = makeStyles(() => ({
+const useStyles = makeStyles(() => ({
   wrapper: {
     height: 60,
     display: "flex",
@@ -49,8 +49,16 @@ type userType = {
   icon: string;
   token: string;
 };
+type InputFieldType = {
+  onChange: (e: ChangeEvent<HTMLInputElement>, b?: string) => void;
+  editable: boolean;
+  value: string;
+  handleEdit: () => void;
+  limit?: boolean;
+  onSave: () => void;
+};
 
-function InputField(props: any) {
+function InputField(props: InputFieldType) {
   const {
     onChange,
     editable = false,
@@ -107,7 +115,8 @@ function InputField(props: any) {
 }
 
 const defUser = { label: "", about: "", icon: "", token: "" };
-function MyProfile(props: any) {
+type MyProfileType = { open: boolean; handleProfile: () => void };
+function MyProfile(props: MyProfileType) {
   const { open, handleProfile } = props;
   const classes = useStyles();
 
@@ -138,7 +147,7 @@ function MyProfile(props: any) {
     };
     setLoading(true);
     axios(config)
-      .then((res: any) => {
+      .then((res) => {
         const { success, message, result } = res.data;
         if (!success) throw new Error(message);
 
