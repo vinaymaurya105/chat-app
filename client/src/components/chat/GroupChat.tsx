@@ -156,9 +156,15 @@ function GroupChat(props: GroupChatType) {
             </IconButton>
           </Box>
 
-          <DialogContent dividers>
+          <DialogContent dividers style={{ height: "100%", flex: 1 }}>
             {!next ? (
-              <Box height="100%" flex={1}>
+              <Box
+                height="100%"
+                flex={1}
+                display="flex"
+                flexDirection="column"
+                gap={1}
+              >
                 <Box p={1}>
                   <TextField
                     className={classes.input}
@@ -186,6 +192,7 @@ function GroupChat(props: GroupChatType) {
                     onKeyDown={handleKeyPress}
                     onChange={handleInputChange}
                     value={search}
+                    autoFocus
                   />
                 </Box>
 
@@ -201,20 +208,33 @@ function GroupChat(props: GroupChatType) {
                 </Box>
               </Box>
             ) : (
-              <Box>
+              <Box display="flex" flexDirection="column" gap={2}>
                 <Box
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
                   p="28px 0"
+                  bgcolor="#F0F2F5"
                 >
                   <Profile size={200} editable />
                 </Box>
-                <TextField fullWidth variant="standard" />
+                <Box display="flex" flexDirection="column" gap={0.6}>
+                  <Typography variant="body2" color="#008069">
+                    Group name
+                  </Typography>
+                  <TextField
+                    placeholder="Please enter your group name"
+                    fullWidth
+                    variant="standard"
+                    InputProps={{ disableUnderline: true }}
+                    style={{ borderBottom: "1px solid #008069" }}
+                    autoFocus
+                  />
+                </Box>
               </Box>
             )}
           </DialogContent>
-          <DialogActions>
+          <DialogActions style={{ padding: 20 }}>
             <Button
               variant="contained"
               className={classes.button}
