@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
-import { LIST_USERS } from "../../utils/constants/api";
+import { CREATE_GROUP_CHAT, LIST_USERS } from "../../utils/constants/api";
 import { Close } from "@mui/icons-material";
 import axios from "axios";
 import Loader from "../Loader";
@@ -76,7 +76,7 @@ function GroupChat(props: GroupChatType) {
   const [next, setNext] = useState(false);
   const scrollRef = useRef<any>(null);
   const [search, setSearch] = useState("");
-  const [groupame, setGroupName] = useState("");
+  const [groupName, setGroupName] = useState("");
 
   const handleNext = () => {
     setNext((prev) => !prev);
@@ -112,9 +112,26 @@ function GroupChat(props: GroupChatType) {
     }
   };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
+  };
+
+  const handleGroupname = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setGroupName(value);
+  };
+
+  const handleCreateGroup = () => {
+    const config = {
+      method: "POST",
+      url: CREATE_GROUP_CHAT,
+      headers: getReqHeaders(),
+      data: { name: groupName, users: selected.map((user) => user.id) },
+    };
+    axios(config).then((res) => {
+      const { success, message, result } = res.data;
+    });
   };
 
   useEffect(() => {
@@ -156,7 +173,7 @@ function GroupChat(props: GroupChatType) {
             </IconButton>
           </Box>
 
-          <DialogContent dividers style={{ height: "100%", flex: 1 }}>
+          <DialogContent dividers>
             {!next ? (
               <Box
                 height="100%"
@@ -190,7 +207,7 @@ function GroupChat(props: GroupChatType) {
                     }}
                     sx={{ fieldset: { border: "none" } }}
                     onKeyDown={handleKeyPress}
-                    onChange={handleInputChange}
+                    onChange={handleSearch}
                     value={search}
                     autoFocus
                   />
@@ -229,6 +246,7 @@ function GroupChat(props: GroupChatType) {
                     InputProps={{ disableUnderline: true }}
                     style={{ borderBottom: "1px solid #008069" }}
                     autoFocus
+                    onChange={handleGroupname}
                   />
                 </Box>
               </Box>
@@ -236,18 +254,20 @@ function GroupChat(props: GroupChatType) {
           </DialogContent>
           <DialogActions style={{ padding: 20 }}>
             <Button
-              variant="contained"
+              variant="outlined"
               className={classes.button}
               disableFocusRipple
               onClick={!next ? handleGroupChat : handleNext}
             >
               {!next ? "Cancel" : "Back"}
             </Button>
+
             <Button
               variant="contained"
               className={classes.button}
               disableFocusRipple
-              onClick={!next ? handleNext : () => console.log("Save")}
+              onClick={!next ? handleNext : handleCreateGroup}
+              disabled={!next ? !selected.length : !groupName}
             >
               {!next ? "Next" : "Save"}
             </Button>
