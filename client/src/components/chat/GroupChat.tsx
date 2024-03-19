@@ -129,9 +129,19 @@ function GroupChat(props: GroupChatType) {
       headers: getReqHeaders(),
       data: { name: groupName, users: selected.map((user) => user.id) },
     };
-    axios(config).then((res) => {
-      const { success, message, result } = res.data;
-    });
+    setLoading(true);
+    axios(config)
+      .then((res) => {
+        const { success, message, result } = res.data;
+        if (!success) throw new Error(message);
+        console.log(result);
+        setLoading(false);
+        handleGroupChat();
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err.message);
+      });
   };
 
   useEffect(() => {
